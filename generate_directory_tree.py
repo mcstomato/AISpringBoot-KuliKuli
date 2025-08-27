@@ -16,17 +16,35 @@ def generate_tree(directory, ignore_dirs=[".git", "__pycache__", "node_modules"]
     except:
         return ""
     
-    for index, entry in enumerate(entries):
+    # 分离文件夹和文件
+    dirs = []
+    files = []
+    for entry in entries:
         if entry in ignore_dirs:
             continue
-            
         path = os.path.join(directory, entry)
-        is_last = index == len(entries) - 1
+        if os.path.isdir(path):
+            dirs.append(entry)
+        else:
+            files.append(entry)
+    
+    # 先处理文件夹，再处理文件
+    all_entries = dirs + files
+    
+    for index, entry in enumerate(all_entries):
+        path = os.path.join(directory, entry)
+        is_last = index == len(all_entries) - 1
         
         if os.path.isdir(path):
             items.append(f"{prefix}{'└── ' if is_last else '├── '}📁 {entry}/")
             extension = "    " if is_last else "│   "
-            items.append(generate_tree(path, ignore_dirs, prefix + extension))
+            subtree = generate_tree(path, ignore_dirs, prefix + extension)
+            items.append(subtree)
+            # 如果是文件夹且不是最后一个项目，添加格式正确的空行
+            if not is_last and subtree.strip():
+                # 创建正确格式的空行（保持相同的缩进）
+                empty_line_prefix = prefix + ("    " if is_last else "│   ")
+                items.append(empty_line_prefix.rstrip())
         else:
             # 为不同文件类型添加不同图标
             icons = {
@@ -92,7 +110,7 @@ def update_readme():
     if os.path.exists(readme_path):
         with open(readme_path, 'r', encoding='utf-8') as f:
             content = f.read()
-        
+
         # 使用正则表达式替换目录树部分
         pattern = r'## 📁 项目文件结构.*?```.*?```'
         if re.search(pattern, content, re.DOTALL):
@@ -102,15 +120,14 @@ def update_readme():
             new_content = content + "\n\n" + new_tree_section
     else:
         new_content = f"""# 项目名称
-
 {new_tree_section}
 """
-    
+
     # 写入更新后的内容
     with open(readme_path, 'w', encoding='utf-8') as f:
         f.write(new_content)
-    
-    print("✅ README.md 已更新！")
 
+    print("✅ README.md 已更新！")
+    
 if __name__ == "__main__":
     update_readme()
