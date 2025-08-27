@@ -85,7 +85,7 @@ def update_readme():
     
     # 构建新的目录树部分
     new_tree_section = f"""## 📁 项目文件结构
-
+```bash
 {tree_content}
 """
     # 读取现有 README
