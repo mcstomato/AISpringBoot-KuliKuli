@@ -1,4 +1,4 @@
-### 🎯 高保真原型设计分工
+## 🎯 高保真原型设计分工
 
 | 模块 | 负责人 | 进度 |
 |:----|:------|:----|
@@ -15,27 +15,25 @@
 
 ---
 
-## 📁 文件结构目录
+## 📁 项目文件结构
 
-```bash
-project-root/
-│
-├── 📂 需求文档/
+├── 📁 HTML/
+│   ├── 🌐 QingPingLe.html
+│   ├── 🌐 RenWuJianJie.html
+│   ├── 🌐 WangLuShan.html
+│   ├── 🌐 wqp.html
+│   ├── 🖼️ wqp.jpg
+│   └── 🌐 wqpjj.html
+├── 📁 HTML演示图片/
+│   ├── 🖼️ 人物简介.png
+│   ├── 🖼️ 吴某_对应核桃主页.png
+│   ├── 🖼️ 吴某简介_对应核桃简介页.png
+│   ├── 🖼️ 望庐山瀑布.png
+│   └── 🖼️ 清平乐·年年雪里.png
+├── 📄 README.md
+├── 🐍 generate_directory_tree.py
+├── 📁 需求文档/
 │   ├── 📄 BRD.docx
 │   ├── 📄 MRD.docx
 │   └── 📄 PRD.docx
-│
-├── 📂 HTML/
-│   ├── QingPingLe.html
-│   ├── RenWuJianJie.html
-│   ├── WangLuShan.html
-│   ├── wqp.html
-│   ├── wqpjj.html
-│   └── wqp.jpg
-│
-├── 📂 HTML演示图片/
-    ├── 🖼️ 清平乐·年年雪里.png
-    ├── 🖼️ 人物简介.png
-    ├── 🖼️ 望庐山瀑布.png   
-    ├── 🖼️ 吴某_对应核桃主页.png
-    └── 🖼️ 吴某简介_对应核桃简介页.png
+└── 📄 高仿真原型-视频播放器.zip
