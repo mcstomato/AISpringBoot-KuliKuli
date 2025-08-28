@@ -19,6 +19,104 @@
 
 ## 📁 项目文件结构
 ```bash
+├── 📁 AISpringBoot/
+│   ├── 📁 data/
+│   │   ├── 📄 demo.mv.db
+│   │   └── 📄 demo.trace.db
+│   │
+│   ├── 📁 src/
+│   │   └── 📁 main/
+│   │       ├── 📁 java/
+│   │       │   └── 📁 com/
+│   │       │       └── 📁 example/
+│   │       │           └── 📁 demo/
+│   │       │               ├── 📁 config/
+│   │       │               │   └── 📄 DataMigrationRunner.java
+│   │       │               │
+│   │       │               ├── 📁 controller/
+│   │       │               │   ├── 📄 BannerController.java
+│   │       │               │   ├── 📄 ImageProxyController.java
+│   │       │               │   ├── 📄 VideoController.java
+│   │       │               │   └── 📄 WelcomeController.java
+│   │       │               │
+│   │       │               ├── 📁 dao/
+│   │       │               │   ├── 📄 BannerMessageRepository.java
+│   │       │               │   ├── 📄 BilibiliVideoRepository.java
+│   │       │               │   └── 📄 PlaceholderDao.java
+│   │       │               │
+│   │       │               ├── 📁 model/
+│   │       │               │   ├── 📄 BannerMessage.java
+│   │       │               │   └── 📄 BilibiliVideo.java
+│   │       │               │
+│   │       │               ├── 📁 service/
+│   │       │               │   └── 📄 WelcomeService.java
+│   │       │               │
+│   │       │               └── 📄 Application.java
+│   │       │
+│   │       └── 📁 resources/
+│   │           ├── 📁 static/
+│   │           │   └── 🌐 index.html
+│   │           │
+│   │           ├── 📄 application.properties
+│   │           ├── 📄 bilibili_videos.sql
+│   │           ├── 📄 data.sql
+│   │           └── 📄 schema.sql
+│   │
+│   ├── 📁 target/
+│   │   ├── 📁 classes/
+│   │   │   ├── 📁 com/
+│   │   │   │   └── 📁 example/
+│   │   │   │       └── 📁 demo/
+│   │   │   │           ├── 📁 config/
+│   │   │   │           │   └── 📄 DataMigrationRunner.class
+│   │   │   │           │
+│   │   │   │           ├── 📁 controller/
+│   │   │   │           │   ├── 📄 BannerController.class
+│   │   │   │           │   ├── 📄 ImageProxyController.class
+│   │   │   │           │   ├── 📄 VideoController.class
+│   │   │   │           │   └── 📄 WelcomeController.class
+│   │   │   │           │
+│   │   │   │           ├── 📁 dao/
+│   │   │   │           │   ├── 📄 BannerMessageRepository.class
+│   │   │   │           │   ├── 📄 BilibiliVideoRepository.class
+│   │   │   │           │   └── 📄 PlaceholderDao.class
+│   │   │   │           │
+│   │   │   │           ├── 📁 model/
+│   │   │   │           │   ├── 📄 BannerMessage.class
+│   │   │   │           │   └── 📄 BilibiliVideo.class
+│   │   │   │           │
+│   │   │   │           ├── 📁 service/
+│   │   │   │           │   └── 📄 WelcomeService.class
+│   │   │   │           │
+│   │   │   │           └── 📄 Application.class
+│   │   │   │
+│   │   │   ├── 📁 static/
+│   │   │   │   └── 🌐 index.html
+│   │   │   │
+│   │   │   ├── 📄 application.properties
+│   │   │   ├── 📄 bilibili_videos.sql
+│   │   │   ├── 📄 data.sql
+│   │   │   └── 📄 schema.sql
+│   │   │
+│   │   ├── 📁 generated-sources/
+│   │   │   └── 📁 annotations/
+
+│   │   │
+│   │   ├── 📁 maven-archiver/
+│   │   │   └── 📄 pom.properties
+│   │   │
+│   │   ├── 📁 maven-status/
+│   │   │   └── 📁 maven-compiler-plugin/
+│   │   │       └── 📁 compile/
+│   │   │           └── 📁 default-compile/
+│   │   │               ├── 📄 createdFiles.lst
+│   │   │               └── 📄 inputFiles.lst
+│   │   │
+│   │   ├── 📄 demo-0.0.1-SNAPSHOT.jar
+│   │   └── 📄 demo-0.0.1-SNAPSHOT.jar.original
+│   │
+│   └── 📄 pom.xml
+│
 ├── 📁 HTML/
 │   ├── 🌐 QingPingLe.html
 │   ├── 🌐 RenWuJianJie.html
@@ -26,6 +124,13 @@
 │   ├── 🌐 wqp.html
 │   ├── 🖼️ wqp.jpg
 │   └── 🌐 wqpjj.html
+│
+├── 📁 HTML源码截图/
+│   ├── 🖼️ 人物简介.png
+│   ├── 🖼️ 吴某_对应核桃主页.png
+│   ├── 🖼️ 吴某简介_对应核桃简介页.png
+│   ├── 🖼️ 望庐山瀑布.png
+│   └── 🖼️ 清平乐·年年雪里.png
 │
 ├── 📁 HTML演示图片/
 │   ├── 🖼️ 人物简介.png
@@ -39,6 +144,8 @@
 │   ├── 📄 MRD.docx
 │   └── 📄 PRD.docx
 │
+├── 🐍 Get_video_information.py
 ├── 📄 README.md
 ├── 🐍 generate_directory_tree.py
+├── 🐍 migrate_bilibili_to_schema.py
 └── 📄 高仿真原型-视频播放器.zip
