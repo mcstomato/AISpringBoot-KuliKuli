@@ -17,17 +17,21 @@
 ## ✨ 本级文件说明
 
 ### 📄 文件
-- `Get_video_information.py`      bilibili视频信息获取程序，保存至mysql，需要请按代码内容创建数据表
-- `generate_directory_tree.py`    用于根据文件内容生成树状文件结构目录
-- `migrate_bilibili_to_schema.py` 用于将mysql导出的sql文件内容移植到H2可用的sql文件中(schema.sql)
-- `高仿真原型-视频播放器.zip`      作业：高仿真原型
+| 文件/文件夹名                   | 说明                                                         |
+|--------------------------------|--------------------------------------------------------------|
+| `Get_video_information.py`     | bilibili视频信息获取程序，保存至mysql，需要请按代码内容创建数据表 |
+| `generate_directory_tree.py`   | 用于根据文件内容生成树状文件结构目录                           |
+| `migrate_bilibili_to_schema.py`| 用于将mysql导出的sql文件内容移植到H2可用的sql文件中(schema.sql) |
+| `高仿真原型-视频播放器.zip`     | 作业：高仿真原型                                             |
 
 ### 📁 文件夹
-- `AISpringBoot`                 作业：SpringBoot架构的项目，包含了作业内容：显示学号姓名班级等
-- `HTML源码截图`                  作业：用来练手的示例的HTML源码截图
-- `HTML演示图片`                  作业：用来练手的示例的HTML效果截图
-- `HTML`                         作业：HTML编辑教学时用于练手的示例
-- `需求文档`                      作业：BRD/MRD/PRD文档
+| 文件/文件夹名     | 说明                                                         |
+|------------------|--------------------------------------------------------------|
+| `AISpringBoot`   | 作业：SpringBoot架构的项目，包含了作业内容：显示学号姓名班级等 |
+| `HTML源码截图`    | 作业：用来练手的示例的HTML源码截图                           |
+| `HTML演示图片`    | 作业：用来练手的示例的HTML效果截图                           |
+| `HTML`           | 作业：HTML编辑教学时用于练手的示例                           |
+| `需求文档`        | 作业：BRD/MRD/PRD文档                                        |
 
 ## 📁 项目文件结构
 ```bash
