@@ -12,7 +12,7 @@ def generate_tree(directory, ignore_dirs=[".git", "__pycache__", "node_modules"]
     """生成目录树字符串"""
     items = []
     try:
-        entries = sorted(os.listdir(directory))
+        entries = os.listdir(directory)
     except:
         return ""
     
@@ -28,7 +28,19 @@ def generate_tree(directory, ignore_dirs=[".git", "__pycache__", "node_modules"]
         else:
             files.append(entry)
     
-    # 先处理文件夹，再处理文件
+    # 排序：目录按名称升序；文件按“文档优先 -> 扩展名 -> 文件名”升序
+    docs_ext = {'.md', '.txt', '.doc', '.docx', '.pdf', '.rtf', '.adoc', '.rst', '.html'}
+
+    dirs = sorted(dirs, key=lambda x: x.lower())
+
+    def file_sort_key(filename: str):
+        ext = Path(filename).suffix.lower()
+        is_doc = 0 if ext in docs_ext else 1
+        return (is_doc, ext, filename.lower())
+
+    files = sorted(files, key=file_sort_key)
+
+    # 先处理文件夹，再处理文件（保持既有结构：目录在前，文件在后）
     all_entries = dirs + files
     
     for index, entry in enumerate(all_entries):
