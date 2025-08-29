@@ -22,12 +22,17 @@
 | `Get_video_information.py`     | bilibili视频信息获取程序，保存至mysql，需要请按代码内容创建数据表 |
 | `generate_directory_tree.py`   | 用于根据文件内容生成树状文件结构目录                           |
 | `migrate_bilibili_to_schema.py`| 用于将mysql导出的sql文件内容移植到H2可用的sql文件中(schema.sql) |
-| `高仿真原型-视频播放器.zip`     | 作业：高仿真原型                                             |
+| `产品战略文档.docx`     | 作业：BRD MRD PRD | 
+| `导出接口文档.html`     | 作业：apifox软件项目导出内容| 
+| `apifox访问url.txt`     | 作业：项目分享至mock的链接| 
+| `原型远程访问url.txt`     | 作业：高保真原型访问链接| 
+
 
 ### 📁 文件夹
 | 文件/文件夹名     | 说明                                                         |
 |------------------|--------------------------------------------------------------|
-| `AISpringBoot`   | 作业：SpringBoot架构的项目，包含了作业内容：显示学号姓名班级等 |
+| `backend`   | 作业：SpringBoot架构的项目，包含了作业内容：显示学号姓名班级等 该文件是项目后端内容|
+| `frontend`   | 作业：SpringBoot架构的项目，包含了作业内容：显示学号姓名班级等 该文件是前端静态网页内容|
 | `HTML源码截图`    | 作业：用来练手的示例的HTML源码截图                           |
 | `HTML演示图片`    | 作业：用来练手的示例的HTML效果截图                           |
 | `HTML`           | 作业：HTML编辑教学时用于练手的示例                           |
