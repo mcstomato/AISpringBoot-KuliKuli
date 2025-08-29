@@ -575,5 +575,26 @@
             });
         });
     </script>
+    <!-- Coze Web SDK -->
+    <script src="https://lf-cdn.coze.cn/obj/unpkg/flow-platform/chat-app-sdk/1.2.0-beta.10/libs/cn/index.js" defer></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', function () {
+            if (window.CozeWebSDK && window.CozeWebSDK.WebChatClient) {
+                new CozeWebSDK.WebChatClient({
+                    config: {
+                        bot_id: '7543881918996807714'
+                    },
+                    componentProps: {
+                        title: 'Coze'
+                    },
+                    auth: {
+                        type: 'token',
+                        token: 'pat_LTo4Bun6g0n6eNAvW1LFVADTNT0YfUjdCMngcT0HF8jVvhy4s4J70Xxly1VCEINL',
+                        onRefreshToken: function () { return 'pat_LTo4Bun6g0n6eNAvW1LFVADTNT0YfUjdCMngcT0HF8jVvhy4s4J70Xxly1VCEINL'; }
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>
