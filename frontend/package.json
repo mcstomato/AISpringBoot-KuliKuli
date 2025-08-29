@@ -1,0 +1,17 @@
+{
+  "name": "ai-springboot-frontend",
+  "version": "1.0.0",
+  "description": "AI SpringBoot项目前端",
+  "main": "index.html",
+  "scripts": {
+    "start": "http-server -p 3000 -c-1",
+    "dev": "http-server -p 3000 -c-1 --cors",
+    "build": "echo '前端构建完成'"
+  },
+  "keywords": ["frontend", "html", "javascript"],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}

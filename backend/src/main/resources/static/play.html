@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>视频播放 - 酷哩酷哩</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", "Segoe UI", sans-serif;
+        }
+        
+        body {
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        
+        /* 顶部导航栏 */
+        .header {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+        }
+        
+        .logo img {
+            height: 36px;
+        }
+        
+        .logo span {
+            color: #FB7299;
+            font-size: 20px;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+        
+        .back-btn {
+            padding: 8px 16px;
+            background: #FB7299;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: #e65a7f;
+        }
+        
+        /* 主要内容区 */
+        .main-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 12px;
+        }
+        
+        /* 视频播放器区域 */
+        .video-player-container {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .video-player {
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 宽高比 */
+            position: relative;
+            background: #000;
+        }
+        
+        .video-player iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        /* 视频信息区域 */
+        .video-info {
+            padding: 20px;
+        }
+        
+        .video-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .video-stats {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .video-stats span {
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .video-stats i {
+            margin-right: 5px;
+        }
+        
+        .up-info {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-top: 1px solid #eee;
+        }
+        
+        .up-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+        
+        .up-details h3 {
+            font-size: 16px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .up-details p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        /* 加载状态 */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 400px;
+            background: #f8f8f8;
+            border-radius: 8px;
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #FB7299;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* 错误状态 */
+        .error {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        
+        .error i {
+            font-size: 48px;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .video-title {
+                font-size: 18px;
+            }
+            
+            .video-stats {
+                flex-wrap: wrap;
+            }
+            
+            .video-stats span {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDI0IDMwMCI+PHBhdGggZmlsbD0iI0ZCNzI5OSIgZD0iTTE2MC44MiA3MC4wNGMtMjYuNjcgMC00OC4yIDIxLjUzLTQ4LjIgNDh2ODcuNTVjMCAyNi40NyAyMS41MyA0OCA0OCA0OCAyNi40NyAwIDQ4LTIxLjUzIDQ4LTQ4di04Ny41NWMwLTI2LjQ3LTIxLjUzLTQ4LTQ4LTQ4em0zNDUuMDQgMGMtMjYuNDcgMC00OCAyMS41My00OCA0OHY4Ny41NWMwIDI2LjQ3IDIxLjUzIDQ4IDQ4IDQ4czQ4LTIxLjUzIDQ4LTQ4di04Ny41NWMwLTI2LjQ3LTIxLjUzLTQ4LTQ4LTQ4em0tMTcyLjUyIDI0YzAtMjYuNDcgMjEuNTMtNDggNDgtNDggMjYuNDcgMCA0OCAyMS41MyA0OCA0OHYxNTUuNTNjMCAyNi40Ny0yMS41MyA0OC00OCA0OC0yNi40NyAwLTQ4LTIxLjUzLTQ4LTQ4Vjk0LjA0em0zNDUuMDQgMGMwLTI2LjQ3IDIxLjUzLTQ4IDQ4LTQ4czQ4IDIxLjUzIDQ4IDQ4djE1NS41M2MwIDI2LjQ3LTIxLjUzIDQ4LTQ4IDQ4cy00OC0yMS41My00OC00OFY5NC4wNHoiLz48L3N2Zz4=" alt="Bilibili">
+                <span>酷哩酷哩</span>
+            </div>
+            
+            <div style="flex: 1;"></div>
+            
+            <a href="/" class="back-btn">
+                <i class="fas fa-arrow-left"></i> 返回首页
+            </a>
+        </div>
+    </header>
+
+    <!-- 主要内容区 -->
+    <main class="main-container">
+        <!-- 加载状态 -->
+        <div id="loading" class="loading">
+            <div class="loading-spinner"></div>
+        </div>
+        
+        <!-- 错误状态 -->
+        <div id="error" class="error" style="display: none;">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h3>视频加载失败</h3>
+            <p>请检查视频ID是否正确，或稍后重试</p>
+        </div>
+        
+        <!-- 视频播放器 -->
+        <div id="video-container" class="video-player-container" style="display: none;">
+            <div class="video-player">
+                <iframe id="video-iframe" src="" allowfullscreen></iframe>
+            </div>
+            
+            <div class="video-info">
+                <h1 id="video-title" class="video-title">加载中...</h1>
+                
+                <div class="video-stats">
+                    <span><i class="fas fa-play"></i> <span id="video-views">-</span> 播放</span>
+                    <span><i class="fas fa-comment"></i> <span id="video-danmaku">-</span> 弹幕</span>
+                    <span><i class="fas fa-clock"></i> <span id="video-duration">-</span></span>
+                    <span><i class="fas fa-calendar"></i> <span id="video-publish-time">-</span></span>
+                </div>
+                
+                <div class="up-info">
+                    <img id="up-avatar" class="up-avatar" src="" alt="UP主头像">
+                    <div class="up-details">
+                        <h3 id="up-name">加载中...</h3>
+                        <p>UP主</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // 获取URL参数中的视频ID
+        function getVideoId() {
+            const pathParts = window.location.pathname.split('/');
+            return pathParts[pathParts.length - 1];
+        }
+        
+        // 加载视频信息
+        async function loadVideo() {
+            const videoId = getVideoId();
+            if (!videoId) {
+                showError();
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/api/videos/${videoId}`);
+                const video = await response.json();
+                
+                if (!video.id) {
+                    showError();
+                    return;
+                }
+                
+                // 显示视频信息
+                document.getElementById('video-title').textContent = video.title || '未知标题';
+                document.getElementById('video-views').textContent = video.views || '0';
+                document.getElementById('video-danmaku').textContent = video.danmaku || '0';
+                document.getElementById('video-duration').textContent = video.duration || '--:--';
+                document.getElementById('video-publish-time').textContent = video.publishTime ? new Date(video.publishTime).toLocaleDateString() : '未知时间';
+                document.getElementById('up-name').textContent = video.upName || '未知UP主';
+                
+                // 设置UP主头像
+                const upAvatar = document.getElementById('up-avatar');
+                if (video.upFaceUrl) {
+                    upAvatar.src = `/proxy/image?url=${encodeURIComponent(video.upFaceUrl)}`;
+                } else {
+                    upAvatar.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjUiIGN5PSIyNSIgcj0iMjUiIGZpbGw9IiNkZGQiLz4KPHN2Zz4=';
+                }
+                
+                // 设置视频播放器
+                const videoIframe = document.getElementById('video-iframe');
+                if (video.embedUrl) {
+                    // 解码HTML实体
+                    const embedUrl = video.embedUrl
+                        .replace(/&amp;/g, '&')
+                        .replace(/&lt;/g, '<')
+                        .replace(/&gt;/g, '>')
+                        .replace(/&quot;/g, '"')
+                        .replace(/&#39;/g, "'");
+                    videoIframe.src = embedUrl;
+                } else {
+                    showError();
+                    return;
+                }
+                
+                // 隐藏加载状态，显示视频
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('video-container').style.display = 'block';
+                
+                // 更新页面标题
+                document.title = `${video.title} - 酷哩酷哩`;
+                
+            } catch (error) {
+                console.error('加载视频失败:', error);
+                showError();
+            }
+        }
+        
+        // 显示错误状态
+        function showError() {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('error').style.display = 'block';
+        }
+        
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', loadVideo);
+    </script>
+</body>
+</html>

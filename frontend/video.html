@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>视频页面 - 酷哩酷哩</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", "Segoe UI", sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .welcome-container {
+            background: white;
+            padding: 60px 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+        }
+        
+        .welcome-title {
+            font-size: 2.5em;
+            color: #FB7299;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        .welcome-subtitle {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .welcome-message {
+            font-size: 1.5em;
+            color: #333;
+            background: linear-gradient(45deg, #FB7299, #00A1D6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: bold;
+            margin-bottom: 40px;
+        }
+        
+        .back-link {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #FB7299;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .back-link:hover {
+            background: #e65a7f;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(251, 114, 153, 0.3);
+        }
+        
+        .emoji {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .welcome-container {
+                padding: 40px 20px;
+            }
+            
+            .welcome-title {
+                font-size: 2em;
+            }
+            
+            .welcome-message {
+                font-size: 1.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="welcome-container">
+        <div class="emoji">🎬</div>
+        <h1 class="welcome-title">欢迎来到视频页面</h1>
+        <p class="welcome-subtitle">这里是酷哩酷哩的视频专区</p>
+        <div class="welcome-message">
+            我是黑大电子1班的田坤，我的学号是20222281
+        </div>
+        <a href="/" class="back-link">返回首页</a>
+    </div>
+</body>
+</html>
+
