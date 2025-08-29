@@ -175,7 +175,9 @@
 ├── 📄 README.md
 ├── 📝 apifox访问url.txt
 ├── 📝 原型远程访问url.txt
-├── 📄 Run.bat
+├── 📄 mysql导出bilibili_videos.sql.bat
+├── 📄 运行项目.bat
 ├── 🐍 generate_directory_tree.py
-├── 🐍 Get_video_information.py
+├── 🐍 Get_video_information_hot.py
+├── 🐍 Get_video_information_ranking.py
 └── 🐍 migrate_bilibili_to_schema.py
