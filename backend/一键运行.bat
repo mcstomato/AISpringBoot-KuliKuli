@@ -1,5 +1,4 @@
 @echo off
-
 chcp 65001 >nul
 
 echo.
@@ -11,50 +10,45 @@ echo 学号: 20222281
 echo ====================================
 echo      问题请反馈邮箱
 echo ====================================
-echo.nobreak >nul
-start /B cmd /c "timeout /t 5 /nobreak >nul && start http://localhost:8080 && start http://localhost:8080/h2-console"
+echo.
 
-setlocal enabledelayedexpansion
+REM 延迟5秒后打开浏览器
+start /B "" cmd /c "timeout /t 5 /nobreak >nul && start "" http://localhost:8080"
+start /B "" cmd /c "timeout /t 5 /nobreak >nul && start "" http://localhost:8080/h2-console"
 
 set "JAR_NAME=demo-0.0.1-SNAPSHOT.jar"
 set "JAR_PATH="
 
 echo 正在搜索 %JAR_NAME% ...
 
-:: 在当前目录搜索
+REM 在当前目录搜索
 if exist "%JAR_NAME%" (
     set "JAR_PATH=%cd%\%JAR_NAME%"
-    echo 在当前目录找到: !JAR_PATH!
+    echo 在当前目录找到: %JAR_PATH%
     goto RUN_JAR
 )
 
-:: 在子目录中搜索
-for /r . %%i in (%JAR_NAME%) do (
-    if exist "%%i" (
-        set "JAR_PATH=%%i"
-        echo 在子目录找到: !JAR_PATH!
-        goto RUN_JAR
-    )
-)
-
-:: 在父目录中搜索
-set "CURRENT_DIR=%cd%"
-:PARENT_SEARCH
-cd ..
-if exist "%JAR_NAME%" (
-    set "JAR_PATH=%cd%\%JAR_NAME%"
-    echo 在父目录找到: !JAR_PATH!
+REM 在子目录中搜索
+for /f "delims=" %%i in ('dir /s /b "%JAR_NAME%" 2^>nul') do (
+    set "JAR_PATH=%%i"
+    echo 在子目录找到: %%i
     goto RUN_JAR
 )
 
-:: 检查是否到达根目录
-if not "%cd%"=="%CURRENT_DIR:~0,3%" goto PARENT_SEARCH
+REM 在父目录中搜索
+set "PARENT_DIR=%~dp0.."
+cd /d "%PARENT_DIR%"
+if exist "%JAR_NAME%" (
+    set "JAR_PATH=%cd%\%JAR_NAME%"
+    echo 在父目录找到: %JAR_PATH%
+    goto RUN_JAR
+)
 
-:: 如果没找到文件
 echo 错误: 未找到 %JAR_NAME%
 pause
 exit /b 1
 
 :RUN_JAR
-echo 正在运行: java -jar "!JAR_PATH!" --server.address=0.0.0.0
-java -jar "!JAR_PATH!" --server.address=0.0.0.0
+echo 正在运行: java -jar "%JAR_PATH%"
+java -jar "%JAR_PATH%"
+pause
