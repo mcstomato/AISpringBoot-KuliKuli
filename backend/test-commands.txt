@@ -1,0 +1,59 @@
+# Spring Shell 测试命令列表
+# 在Spring Shell启动后，可以依次执行以下命令进行测试
+
+# 1. 查看帮助信息
+help
+
+# 2. 查看系统状态
+status
+
+# 3. 查看所有用户
+users list
+
+# 4. 查看指定用户（通过ID）
+users show --id 1000
+
+# 5. 查看指定用户（通过账号）
+users show --account admin
+
+# 6. 搜索用户
+users search --keyword admin
+
+# 7. 查看所有视频
+videos list
+
+# 8. 查看指定视频
+videos show --id 1
+
+# 9. 搜索视频
+videos search --keyword 测试
+
+# 10. 查看热门视频
+videos hot --limit 5
+
+# 11. 查看视频统计
+videos stats
+
+# 12. 查看数据库表
+db tables
+
+# 13. 查看表结构
+db describe --table users
+
+# 14. 执行SQL查询
+db query --sql "SELECT COUNT(*) FROM users"
+
+# 15. 查看数据库状态
+db status
+
+# 16. 清屏
+clear
+
+# 17. 静默模式说明
+silent
+
+# 18. 停止应用程序
+stop
+# 或者使用别名
+exit
+quit

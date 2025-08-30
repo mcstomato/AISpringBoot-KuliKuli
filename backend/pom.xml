@@ -34,6 +34,12 @@
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
+        <!-- Spring Shell 依赖 -->
+        <dependency>
+            <groupId>org.springframework.shell</groupId>
+            <artifactId>spring-shell-starter</artifactId>
+            <version>2.1.7</version>
+        </dependency>
         <!-- 如仍需 MySQL，可保留以下依赖；切换到 H2 可移除以减小体积 -->
         <!--
         <dependency>
