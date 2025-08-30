@@ -27,9 +27,15 @@ backend/
 │       │   │   ├── User.java             # 用户实体
 │       │   │   ├── BilibiliVideo.java    # 视频实体
 │       │   │   └── BannerMessage.java    # Banner实体
-│       │   └── config/                   # 配置类
-│       │       ├── CorsConfig.java       # 跨域配置
-│       │       └── DataMigrationRunner.java # 数据迁移配置
+│       │   ├── config/                   # 配置类
+│       │   │   ├── CorsConfig.java       # 跨域配置
+│       │   │   ├── DataMigrationRunner.java # 数据迁移配置
+│       │   │   └── ShellConfig.java      # Spring Shell配置
+│       │   └── shell/                    # Shell命令类
+│       │       ├── UserCommands.java     # 用户管理命令
+│       │       ├── VideoCommands.java    # 视频管理命令
+│       │       ├── DatabaseCommands.java # 数据库操作命令
+│       │       └── SystemCommands.java   # 系统管理命令
 │       └── resources/
 │           ├── application.properties    # 应用配置
 │           ├── schema.sql               # 数据库结构
@@ -46,6 +52,7 @@ backend/
 │   ├── demo_db.mv.db                    # 主数据库文件
 │   └── demo_db.trace.db                 # 数据库日志文件
 ├── pom.xml                              # Maven配置
+├── test-shell.bat                       # Spring Shell测试脚本
 └── README.md                            # 项目说明
 ```
 
@@ -60,6 +67,12 @@ backend/
 ```bash
 # 在项目根目录运行
 运行项目.bat
+```
+
+### 使用Spring Shell交互式命令行（推荐）
+```bash
+# 在backend目录运行
+test-shell.bat
 ```
 
 ### 使用PowerShell
@@ -204,12 +217,184 @@ CREATE TABLE bilibili_videos (
 - 数据库文件存储在`./data/`目录
 - 静态资源存储在`src/main/resources/static/`目录
 
+## Spring Shell 命令行功能
+
+项目集成了Spring Shell，提供交互式命令行管理功能。启动项目后，您可以在终端中直接输入命令进行数据库操作和系统管理。
+
+### 功能特性
+
+#### 1. 系统管理命令
+- **`help`** - 显示帮助信息，支持具体命令查询
+- **`status`** - 显示系统状态（时间、版本、内存使用等）
+- **`clear`** - 清屏命令，清除日志干扰
+- **`silent`** - 日志管理说明，提供使用指导
+- **`stop`** - 优雅停止应用程序
+- **`exit`** - 退出应用程序（与stop相同）
+- **`quit`** - 退出应用程序别名
+
+#### 2. 用户管理命令
+- **`users list`** - 查看所有用户列表
+- **`users show --id <ID>`** - 通过ID查看用户详情
+- **`users show --account <账号>`** - 通过账号查看用户详情
+- **`users add`** - 添加新用户
+- **`users update --id <ID>`** - 更新用户信息
+- **`users delete --id <ID>`** - 删除用户
+- **`users search --keyword <关键词>`** - 搜索用户
+
+#### 3. 视频管理命令
+- **`videos list`** - 查看所有视频列表
+- **`videos show --id <ID>`** - 查看视频详情
+- **`videos search --keyword <关键词>`** - 搜索视频
+- **`videos add`** - 添加新视频
+- **`videos delete --id <ID>`** - 删除视频
+- **`videos hot --limit <数量>`** - 查看热门视频
+- **`videos stats`** - 查看视频统计信息
+
+#### 4. 数据库操作命令
+- **`db query --sql <SQL语句>`** - 执行SQL查询（仅支持SELECT）
+- **`db tables`** - 查看所有数据库表
+- **`db describe --table <表名>`** - 查看表结构
+- **`db status`** - 查看数据库状态
+- **`db clear --table <表名>`** - 清空表数据（危险操作）
+
+### 技术特性
+
+#### 1. 用户体验优化
+- **表格化输出**：查询结果以美观的表格形式显示
+- **中文支持**：完全支持中文输入和显示
+- **日志管理**：提供日志干扰处理方案
+- **命令补全**：支持Tab键自动补全
+
+#### 2. 安全机制
+- **SQL安全限制**：只允许执行SELECT查询语句
+- **参数验证**：自动验证输入参数的有效性
+- **错误处理**：完善的错误提示和处理机制
+- **优雅关闭**：安全的应用程序停止机制
+
+#### 3. 开发友好
+- **交互式操作**：直接在终端输入命令，实时查看结果
+- **详细帮助**：每个命令都有详细的帮助信息
+- **测试支持**：提供完整的测试命令列表
+- **调试友好**：保持完整日志输出便于调试
+
+### 启动Spring Shell
+```bash
+# 方法1：使用批处理文件
+test-shell.bat
+
+# 方法2：直接使用Maven命令
+mvn spring-boot:run -DskipTests
+
+# 方法3：使用测试命令文件
+# 启动后参考 test-commands.txt 文件中的命令列表
+```
+
+### 常用命令示例
+
+#### 用户管理
+```bash
+# 查看所有用户
+users list
+
+# 查看指定用户详情
+users show --id 1000
+users show --account admin
+
+# 添加新用户
+users add --account testuser --nickname 测试用户 --password 123456 --age 25
+
+# 更新用户信息
+users update --id 1000 --nickname 新昵称 --age 26
+
+# 搜索用户
+users search --keyword 测试
+
+# 删除用户
+users delete --id 1000
+```
+
+#### 视频管理
+```bash
+# 查看所有视频
+videos list
+
+# 查看指定视频详情
+videos show --id 1
+
+# 搜索视频
+videos search --keyword 编程
+
+# 添加新视频
+videos add --title "测试视频" --author "测试作者" --playCount 1000
+
+# 查看热门视频
+videos hot --limit 5
+
+# 查看视频统计
+videos stats
+
+# 删除视频
+videos delete --id 1
+```
+
+#### 数据库操作
+```bash
+# 查看数据库状态
+db status
+
+# 查看所有表
+db tables
+
+# 查看表结构
+db describe --table users
+
+# 执行SQL查询
+db query --sql "SELECT * FROM users WHERE age > 20"
+
+# 清空表数据（危险操作）
+db clear --table users
+```
+
+#### 系统命令
+```bash
+# 查看帮助
+help
+help users
+help videos
+help db
+
+# 查看系统状态
+status
+
+# 清屏和日志管理
+clear
+silent
+
+# 停止应用程序
+stop
+exit
+quit
+```
+
+### 命令特点
+- **交互式操作**：直接在终端输入命令，实时查看结果
+- **表格化输出**：查询结果以美观的表格形式显示
+- **参数验证**：自动验证输入参数的有效性
+- **安全限制**：SQL查询只允许SELECT语句，防止误操作
+- **中文支持**：完全支持中文输入和显示
+- **优雅关闭**：安全的应用程序停止机制
+- **日志管理**：提供日志干扰处理方案
+- **用户体验**：完善的帮助系统和命令补全
+
 ## 注意事项
 - 确保8080端口未被占用
 - 数据库文件会自动创建，无需手动初始化
 - 用户数据会持久化保存，重启后不会丢失
 - 视频数据每次启动会重新加载，确保数据最新
 - 支持跨域访问，前端可直接调用API
+- Spring Shell：项目启动后自动进入交互式命令行模式
+- 日志输出：保持完整日志便于调试，使用`clear`命令清除干扰
+- 应用程序停止：使用`stop`命令优雅关闭
 
 ## 故障排除
 1. **端口占用**: 使用`netstat -ano | findstr :8080`检查端口占用
@@ -346,3 +531,22 @@ CREATE TABLE bilibili_videos (
 |   | 数据库连接测试 | ✅ |
 |   | H2控制台访问测试 | ✅ |
 |   | 前端页面功能测试 | ✅ |
+|--------------------|------------|---|
+| Spring Shell命令行 | Spring Shell依赖集成 | ✅ |
+|   | Shell配置类ShellConfig.java创建 | ✅ |
+|   | 用户管理命令UserCommands.java实现 | ✅ |
+|   | 视频管理命令VideoCommands.java实现 | ✅ |
+|   | 数据库操作命令DatabaseCommands.java实现 | ✅ |
+|   | 系统管理命令SystemCommands.java实现 | ✅ |
+|   | 交互式命令行启动配置 | ✅ |
+|   | 命令参数验证和错误处理 | ✅ |
+|   | 表格化输出格式化 | ✅ |
+|   | 中文输入输出支持 | ✅ |
+|   | SQL查询安全限制 | ✅ |
+|   | 应用程序停止命令（stop） | ✅ |
+|   | 清屏命令（clear）实现 | ✅ |
+|   | 日志管理说明命令（silent） | ✅ |
+|   | 优雅关闭机制实现 | ✅ |
+|   | 命令帮助系统完善 | ✅ |
+|   | 日志输出配置优化 | ✅ |
+

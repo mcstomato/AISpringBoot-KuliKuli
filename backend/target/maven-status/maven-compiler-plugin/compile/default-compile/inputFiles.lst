@@ -1,12 +1,17 @@
+D:\认识实习GIT\backend\src\main\java\com\example\demo\shell\VideoCommands.java
 D:\认识实习GIT\backend\src\main\java\com\example\demo\model\User.java
 D:\认识实习GIT\backend\src\main\java\com\example\demo\model\BannerMessage.java
+D:\认识实习GIT\backend\src\main\java\com\example\demo\shell\UserCommands.java
 D:\认识实习GIT\backend\src\main\java\com\example\demo\controller\BannerController.java
 D:\认识实习GIT\backend\src\main\java\com\example\demo\dao\UserRepository.java
 D:\认识实习GIT\backend\src\main\java\com\example\demo\model\BilibiliVideo.java
+D:\认识实习GIT\backend\src\main\java\com\example\demo\shell\DatabaseCommands.java
 D:\认识实习GIT\backend\src\main\java\com\example\demo\service\WelcomeService.java
 D:\认识实习GIT\backend\src\main\java\com\example\demo\controller\ImageProxyController.java
 D:\认识实习GIT\backend\src\main\java\com\example\demo\controller\WelcomeController.java
+D:\认识实习GIT\backend\src\main\java\com\example\demo\config\ShellConfig.java
 D:\认识实习GIT\backend\src\main\java\com\example\demo\dao\BilibiliVideoRepository.java
+D:\认识实习GIT\backend\src\main\java\com\example\demo\shell\SystemCommands.java
 D:\认识实习GIT\backend\src\main\java\com\example\demo\Application.java
 D:\认识实习GIT\backend\src\main\java\com\example\demo\controller\UserController.java
 D:\认识实习GIT\backend\src\main\java\com\example\demo\dao\BannerMessageRepository.java
