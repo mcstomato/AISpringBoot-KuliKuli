@@ -241,7 +241,7 @@ CREATE TABLE bilibili_videos (
 4. **数据丢失**: 检查`./data/`目录下的数据库文件是否存在
 
 ## 项目完成度
-```plaintext
+
 | A | B | C |
 |---|---|---|
 | 1 | A | X |
