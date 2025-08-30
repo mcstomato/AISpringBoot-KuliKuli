@@ -56,5 +56,5 @@ pause
 exit /b 1
 
 :RUN_JAR
-echo 正在运行: java -jar "!JAR_PATH!"
-java -jar "!JAR_PATH!"
+echo 正在运行: java -jar "!JAR_PATH!" --server.address=0.0.0.0
+java -jar "!JAR_PATH!" --server.address=0.0.0.0
