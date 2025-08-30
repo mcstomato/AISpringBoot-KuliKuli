@@ -1,4 +1,20 @@
 @echo off
+
+chcp 936 >nul
+
+echo.
+echo  ╔══════════════════════════════╗
+echo  ║           STOMATO            ║
+echo  ╠══════════════════════════════╣
+echo  ║ 作者邮箱: 2581775404@qq.com  ║
+echo  ║ 学号: 20222281               ║
+echo  ╠══════════════════════════════╣
+echo  ║      问题请反馈邮箱          ║
+echo  ╚══════════════════════════════╝
+echo.
+timeout /t 1 /nobreak >nul
+start /B cmd /c "timeout /t 5 /nobreak >nul && start http://localhost:8080 && start http://localhost:8080/h2-console"
+
 setlocal enabledelayedexpansion
 
 set "JAR_NAME=demo-0.0.1-SNAPSHOT.jar"
@@ -43,4 +59,3 @@ exit /b 1
 :RUN_JAR
 echo 正在运行: java -jar "!JAR_PATH!"
 java -jar "!JAR_PATH!"
-pause
