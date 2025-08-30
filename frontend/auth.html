@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录 / 注册 - 酷哩酷哩</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Microsoft YaHei", "Segoe UI", sans-serif; }
+        body { background-color: #f4f4f4; color: #333; }
+        .header { background-color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; padding: 12px 0; }
+        .logo { display: flex; align-items: center; margin-right: 20px; }
+        .logo img { height: 36px; }
+        .logo span { color: #FB7299; font-size: 20px; font-weight: bold; margin-left: 5px; }
+        .auth-wrapper { min-height: calc(100vh - 64px); display: flex; align-items: center; justify-content: center; padding: 30px 12px; }
+        .auth-card { width: 100%; max-width: 420px; background: #fff; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.08); overflow: hidden; }
+        .auth-header { padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #f0f0f0; }
+        .auth-title { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: bold; color: #333; }
+        .toggle-btn { border: none; background: #FB7299; color: #fff; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-size: 14px; }
+        .toggle-btn.secondary { background: #00A1D6; }
+        .auth-body { padding: 24px; }
+        .tip { color: #999; font-size: 13px; margin-bottom: 14px; }
+        .form { display: none; }
+        .form.active { display: block; }
+        .form .field { margin-bottom: 14px; }
+        .form label { display: block; margin-bottom: 6px; font-size: 13px; color: #666; }
+        .form input { width: 100%; padding: 10px 12px; border: 1px solid #e6e6e6; border-radius: 8px; outline: none; transition: border-color .2s; }
+        .form input:focus { border-color: #FB7299; }
+        .submit-btn { width: 100%; background: #FB7299; color: #fff; border: none; border-radius: 8px; padding: 10px 0; cursor: pointer; font-size: 15px; margin-top: 6px; }
+        .minor-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+        .minor-actions a { color: #00A1D6; text-decoration: none; font-size: 13px; }
+        .split { height: 1px; background: #f0f0f0; margin: 16px 0; }
+        .oauth { display: flex; gap: 10px; }
+        .oauth button { flex: 1; padding: 8px 0; border: 1px solid #eee; background: #fff; border-radius: 8px; cursor: pointer; color: #666; }
+        .footer { color: #999; font-size: 12px; text-align: center; padding: 18px; }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const btn = document.getElementById('switchBtn');
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const title = document.getElementById('titleText');
+            const smallTip = document.getElementById('smallTip');
+            let mode = 'login';
+            function render() {
+                if (mode === 'login') {
+                    title.textContent = '账号登录';
+                    smallTip.textContent = '欢迎回来，请使用账号密码登录';
+                    loginForm.classList.add('active');
+                    registerForm.classList.remove('active');
+                    btn.textContent = '去注册';
+                    btn.classList.remove('secondary');
+                } else {
+                    title.textContent = '注册账号';
+                    smallTip.textContent = '创建新账户，畅享酷哩酷哩';
+                    registerForm.classList.add('active');
+                    loginForm.classList.remove('active');
+                    btn.textContent = '去登录';
+                    btn.classList.add('secondary');
+                }
+            }
+            btn.addEventListener('click', function(){ mode = (mode === 'login') ? 'register' : 'login'; render(); });
+            render();
+        });
+    </script>
+</head>
+<body>
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDI0IDMwMCI+PHBhdGggZmlsbD0iI0ZCNzI5OSIgZD0iTTE2MC44MiA3MC4wNGMtMjYuNjcgMC00OC4yIDIxLjUzLTQ4LjIgNDh2ODcuNTVjMCAyNi40NyAyMS41MyA0OCA0OCA0OCAyNi40NyAwIDQ4LTIxLjUzIDQ4LTQ4di04Ny41NWMwLTI2LjQ3LTIxLjUzLTQ4LTQ4LTQ4em0zNDUuMDQgMGMtMjYuNDcgMC00OCAyMS41My00OCA0OHY4Ny41NWMwIDI2LjQ3IDIxLjUzIDQ4IDQ4IDQ4czQ4LTIxLjUzIDQ4LTQ4di04Ny41NWMwLTI2LjQ3LTIxLjUzLTQ4LTQ4LTQ4em0tMTcyLjUyIDI0YzAtMjYuNDcgMjEuNTMtNDggNDgtNDggMjYuNDcgMCA0OCAyMS41MyA0OCA0OHYxNTUuNTNjMCAyNi40Ny0yMS41MyA0OC00OCA0OC0yNi40NyAwLTQ4LTIxLjUzLTQ4LTQ4Vjk0LjA0em0zNDUuMDQgMGMwLTI2LjQ3IDIxLjUzLTQ4IDQ4LTQ4czQ4IDIxLjUzIDQ4IDQ4djE1NS41M2MwIDI2LjQ3LTIxLjUzIDQ4LTQ4IDQ4cy00OC0yMS41My00OC00OFY5NC4wNHoiLz48L3N2Zz4=" alt="Bilibili">
+                <span>酷哩酷哩</span>
+            </div>
+        </div>
+    </header>
+    <main class="auth-wrapper">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="auth-title"><i class="fas fa-user-circle" style="color:#FB7299"></i><span id="titleText">账号登录</span></div>
+                <button id="switchBtn" class="toggle-btn">去注册</button>
+            </div>
+            <div class="auth-body">
+                <div id="smallTip" class="tip">欢迎回来，请使用账号密码登录</div>
+                <form id="loginForm" class="form active" onsubmit="return false;">
+                    <div class="field"><label>账号</label><input type="text" placeholder="请输入账号"></div>
+                    <div class="field"><label>密码</label><input type="password" placeholder="请输入密码"></div>
+                    <button class="submit-btn">登录</button>
+                    <div class="minor-actions"><a href="#">忘记密码？</a><a href="index.html">返回首页</a></div>
+                </form>
+                <form id="registerForm" class="form" onsubmit="return false;">
+                    <div class="field"><label>账号</label><input type="text" placeholder="设置登录账号"></div>
+                    <div class="field"><label>昵称</label><input type="text" placeholder="设置昵称"></div>
+                    <div class="field"><label>密码</label><input type="password" placeholder="设置密码"></div>
+                    <div class="field"><label>确认密码</label><input type="password" placeholder="再次输入密码"></div>
+                    <button class="submit-btn">注册</button>
+                    <div class="minor-actions"><span></span><a href="index.html">返回首页</a></div>
+                </form>
+                <div class="split"></div>
+                <div class="oauth">
+                    <button><i class="fab fa-weixin"></i> 微信</button>
+                    <button><i class="fab fa-qq"></i> QQ</button>
+                    <button><i class="fas fa-envelope"></i> 邮箱</button>
+                </div>
+            </div>
+            <div class="footer">© 2025 酷哩酷哩 • 本页仅作UI演示，不含真实登录逻辑</div>
+        </div>
+    </main>
+    <script>
+        (function(){
+            const chineseReg = /[\u4e00-\u9fa5]/;
+            const regBtn = document.getElementById('registerBtn');
+            if (!regBtn) return;
+            regBtn.addEventListener('click', async function(){
+                const loginAccountEl = document.getElementById('loginAccount');
+                const nicknameEl = document.getElementById('nickname');
+                const passwordEl = document.getElementById('password');
+                const confirmPasswordEl = document.getElementById('confirmPassword');
+                const loginAccount = loginAccountEl ? loginAccountEl.value.trim() : '';
+                const nickname = nicknameEl ? nicknameEl.value.trim() : '';
+                const password = passwordEl ? passwordEl.value.trim() : '';
+                const confirmPassword = confirmPasswordEl ? confirmPasswordEl.value.trim() : '';
+
+                if (!loginAccount) { alert('登录账号不能为空'); return; }
+                if (chineseReg.test(loginAccount)) { alert('请勿输入中文'); return; }
+                if (!nickname) { alert('昵称不能为空'); return; }
+                if (!password) { alert('密码不能为空'); return; }
+                if (password !== confirmPassword) { alert('密码不一致'); return; }
+
+                // 前端静态页演示：不实际提交后端
+                alert('校验通过（演示环境不提交）。在后端环境请访问 /auth.html 注册。');
+            });
+        })();
+    </script>
+</body>
+</html>
+
+
