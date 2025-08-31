@@ -1,9 +1,8 @@
 # 🔗 该项目已成功部署至服务器
 # 🔗 主页地址：60.205.198.37:80
-# 🔗 什么？ 你问我一个贫困大学生服务器是哪来的？
-
-<span style="background-color: black; color: black; cursor: pointer;" onmouseover="this.style.color='white'" onmouseout="this.style.color='black'">
-这段文字在鼠标悬停时会显示出来，但效果可能因GitHub的安全策略而受限。
+## 什么 你问我一个贫困大学生服务器是哪来的？
+## 你问我一个贫困大学生服务器是哪来的？
+<span style="color: white; background-color: white; cursor: pointer;">白嫖阿里云</span>
 
 
 ## ⚡ 放在最前面的提示
