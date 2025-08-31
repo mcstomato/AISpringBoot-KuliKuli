@@ -661,14 +661,28 @@
     </footer>
 
     <script>
+        // 全局变量用于分页
+        let currentPage = 1;
+        let currentKeyword = '';
+        let totalPages = 1;
+        let isBilibiliSearch = false;
+        
+        
+        
         document.addEventListener('DOMContentLoaded', function() {
             // 获取URL参数中的搜索关键词
             const urlParams = new URLSearchParams(window.location.search);
             const searchKeyword = urlParams.get('q') || '';
             
+            console.log('搜索页面加载，URL参数:', window.location.search);
+            console.log('搜索关键词:', searchKeyword);
+            
             if (searchKeyword) {
                 document.getElementById('searchInput').value = searchKeyword;
+                console.log('开始自动搜索:', searchKeyword);
                 performSearch(searchKeyword);
+            } else {
+                console.log('没有搜索关键词，显示默认页面');
             }
             
             // 搜索按钮点击事件
@@ -719,14 +733,9 @@
                 }
             });
             
-            // 全局变量用于分页
-            let currentPage = 1;
-            let currentKeyword = '';
-            let totalPages = 1;
-            let isBilibiliSearch = false;
-            
             // 执行搜索
             async function performSearch(keyword, page = 1) {
+                console.log('performSearch被调用，关键词:', keyword, '页码:', page);
                 currentKeyword = keyword;
                 currentPage = page;
                 
@@ -738,8 +747,11 @@
                     document.getElementById('userGrid').innerHTML = '<div style="text-align: center; padding: 40px; color: #999;">搜索中...</div>';
                     
                     // 首先尝试调用Bilibili搜索API
-                    let response = await fetch(`/api/bilibili/search?keyword=${encodeURIComponent(keyword)}&page=${page}&pageSize=20`);
+                    const apiUrl = `/api/bilibili/search?keyword=${encodeURIComponent(keyword)}&page=${page}&pageSize=20`;
+                    console.log('调用Bilibili搜索API:', apiUrl);
+                    let response = await fetch(apiUrl);
                     let data = await response.json();
+                    console.log('Bilibili API响应:', data);
                     
                     if (data.success) {
                         console.log('Bilibili API调用成功，显示真实Bilibili数据');
@@ -747,9 +759,6 @@
                         
                         // Bilibili API成功，渲染视频结果
                         if (data.videos && data.videos.length > 0) {
-                            if (page === 1) {
-                                document.getElementById('videoGrid').innerHTML = '<div style="text-align: center; padding: 10px; color: #00A1D6; font-size: 12px; background: #f0f9ff; border-radius: 4px; margin-bottom: 10px;">✓ 正在显示Bilibili实时数据</div>';
-                            }
                             renderVideos(data.videos);
                             document.getElementById('videoResults').style.display = 'block';
                             
@@ -771,7 +780,7 @@
                         
                         // 更新结果计数
                         const totalResults = data.total || data.videos.length;
-                        document.getElementById('resultCount').textContent = `搜索 "${keyword}" 的结果 (共${totalResults}个)`;
+                        document.getElementById('resultCount').textContent = `搜索 "${keyword}" 的结果 (共${totalResults}个) ✓ 正在显示Bilibili实时数据`;
                     } else if (data.error === 'BILIBILI_API_ERROR') {
                         // Bilibili API失败，回退到本地搜索
                         console.log('Bilibili API暂时不可用，使用本地搜索作为备用方案');
@@ -836,15 +845,8 @@
             // 渲染Bilibili视频
             function renderVideos(videos) {
                 const videoGrid = document.getElementById('videoGrid');
-                // 如果是第一页，保留提示信息；否则清空
-                if (currentPage === 1) {
-                    const existingTip = videoGrid.querySelector('div[style*="color: #00A1D6"]');
-                    if (!existingTip) {
-                        videoGrid.innerHTML = '<div style="text-align: center; padding: 10px; color: #00A1D6; font-size: 12px; background: #f0f9ff; border-radius: 4px; margin-bottom: 10px;">✓ 正在显示Bilibili实时数据</div>';
-                    }
-                } else {
-                    videoGrid.innerHTML = '';
-                }
+                // 清空视频网格
+                videoGrid.innerHTML = '';
                 
                 videos.forEach(video => {
                     const videoCard = document.createElement('div');

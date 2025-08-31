@@ -308,10 +308,8 @@ public class BilibiliApiController {
                         }
                     }
                     
-                    // 随机打乱视频列表
-                    java.util.Collections.shuffle(videos);
-                    
-                    System.out.println("推荐API解析结果: " + videos.size() + " 个视频，已随机打乱");
+                    // 不打乱视频列表，保持原始顺序
+                    System.out.println("推荐API解析结果: " + videos.size() + " 个视频，保持原始顺序");
                     
                     Map<String, Object> result = new HashMap<>();
                     result.put("success", true);
@@ -368,10 +366,8 @@ public class BilibiliApiController {
                         }
                     }
                     
-                    // 随机打乱视频列表
-                    java.util.Collections.shuffle(videos);
-                    
-                    System.out.println("频道" + tid + " API解析结果: " + videos.size() + " 个视频，已随机打乱");
+                    // 不打乱视频列表，保持原始顺序
+                    System.out.println("频道" + tid + " API解析结果: " + videos.size() + " 个视频，保持原始顺序");
                     
                     Map<String, Object> result = new HashMap<>();
                     result.put("success", true);
