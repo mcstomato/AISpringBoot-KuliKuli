@@ -235,13 +235,20 @@
 │   └── 📄 pom.xml
 │
 ├── 📁 frontend/
+│   ├── 🌐 anime.html
 │   ├── 🌐 auth.html
+│   ├── 🌐 esports.html
+│   ├── 🌐 game.html
 │   ├── 🌐 index.html
+│   ├── 🌐 live.html
+│   ├── 🌐 manga.html
+│   ├── 🌐 more.html
 │   ├── 🌐 play.html
 │   ├── 🌐 profile.html
 │   ├── 🌐 search.html
 │   ├── 🌐 test.html
 │   ├── 🌐 video.html
+│   ├── 🌐 vip.html
 │   └── 📋 package.json
 │
 ├── 📁 HTML/
