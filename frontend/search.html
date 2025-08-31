@@ -266,6 +266,76 @@
             color: #00A1D6;
         }
         
+        /* 翻页控件样式 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 30px;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .page-btn {
+            padding: 8px 16px;
+            border: 1px solid #ddd;
+            background: white;
+            color: #666;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            min-width: 40px;
+        }
+        
+        .page-btn:hover:not(:disabled) {
+            border-color: #FB7299;
+            color: #FB7299;
+        }
+        
+        .page-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .page-btn.active {
+            background: #FB7299;
+            color: white;
+            border-color: #FB7299;
+        }
+        
+        .page-numbers {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+        
+        .page-jump {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: 15px;
+        }
+        
+        .page-jump span {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .page-jump input {
+            width: 60px;
+            padding: 6px 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            text-align: center;
+        }
+        
+        .page-jump input:focus {
+            outline: none;
+            border-color: #FB7299;
+        }
+        
         /* 视频卡片网格 */
         .video-grid {
             display: grid;
@@ -485,7 +555,7 @@
             </div>
             
             <nav class="main-nav">
-                <a href="index.html">首页</a>
+                <a href="/">首页</a>
                 <a href="#" class="active">搜索</a>
                 <a href="#">番剧</a>
                 <a href="#">直播</a>
@@ -511,7 +581,7 @@
                 <div class="user-box" id="userBox">
                     <div class="user-avatar" id="userAvatar">
                         <div class="dropdown-menu">
-                            <a href="profile.html" id="profileBtn"><i class="fas fa-user"></i> 个人主页</a>
+                            <a href="/profile.html" id="profileBtn"><i class="fas fa-user"></i> 个人主页</a>
                             <a href="#" id="settingsBtn"><i class="fas fa-cog"></i> 设置页面</a>
                             <div class="divider"></div>
                             <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> 退出登录</a>
@@ -539,16 +609,25 @@
                 <div id="videoResults" class="result-section">
                     <div class="section-title">
                         <h2>视频结果</h2>
-                        <a href="#" id="moreVideos">查看更多 <i class="fas fa-chevron-right"></i></a>
                     </div>
                     <div class="video-grid" id="videoGrid"></div>
+                    <!-- 翻页控件 -->
+                    <div class="pagination" id="videoPagination" style="display: none;">
+                        <button class="page-btn" id="prevPage" disabled>上一页</button>
+                        <div class="page-numbers" id="pageNumbers"></div>
+                        <button class="page-btn" id="nextPage">下一页</button>
+                        <div class="page-jump">
+                            <span>跳转到</span>
+                            <input type="number" id="jumpPageInput" min="1" placeholder="页码">
+                            <button class="page-btn" id="jumpPageBtn">跳转</button>
+                        </div>
+                    </div>
                 </div>
                 
                 <!-- 用户结果 -->
                 <div id="userResults" class="result-section" style="display: none;">
                     <div class="section-title">
                         <h2>用户结果</h2>
-                        <a href="#" id="moreUsers">查看更多 <i class="fas fa-chevron-right"></i></a>
                     </div>
                     <div class="user-grid" id="userGrid"></div>
                 </div>
@@ -582,14 +661,28 @@
     </footer>
 
     <script>
+        // 全局变量用于分页
+        let currentPage = 1;
+        let currentKeyword = '';
+        let totalPages = 1;
+        let isBilibiliSearch = false;
+        
+        
+        
         document.addEventListener('DOMContentLoaded', function() {
             // 获取URL参数中的搜索关键词
             const urlParams = new URLSearchParams(window.location.search);
             const searchKeyword = urlParams.get('q') || '';
             
+            console.log('搜索页面加载，URL参数:', window.location.search);
+            console.log('搜索关键词:', searchKeyword);
+            
             if (searchKeyword) {
                 document.getElementById('searchInput').value = searchKeyword;
+                console.log('开始自动搜索:', searchKeyword);
                 performSearch(searchKeyword);
+            } else {
+                console.log('没有搜索关键词，显示默认页面');
             }
             
             // 搜索按钮点击事件
@@ -598,7 +691,7 @@
                 if (keyword) {
                     performSearch(keyword);
                     // 更新URL
-                    const newUrl = `search.html?q=${encodeURIComponent(keyword)}`;
+                    const newUrl = `/search.html?q=${encodeURIComponent(keyword)}`;
                     window.history.pushState({}, '', newUrl);
                 }
             });
@@ -628,8 +721,24 @@
                 });
             });
             
+            // 翻页按钮事件监听
+            document.getElementById('prevPage').addEventListener('click', prevPage);
+            document.getElementById('nextPage').addEventListener('click', nextPage);
+            document.getElementById('jumpPageBtn').addEventListener('click', jumpToPage);
+            
+            // 跳转输入框回车事件
+            document.getElementById('jumpPageInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    jumpToPage();
+                }
+            });
+            
             // 执行搜索
-            async function performSearch(keyword) {
+            async function performSearch(keyword, page = 1) {
+                console.log('performSearch被调用，关键词:', keyword, '页码:', page);
+                currentKeyword = keyword;
+                currentPage = page;
+                
                 document.getElementById('resultCount').textContent = `搜索 "${keyword}" 的结果`;
                 
                 try {
@@ -637,14 +746,66 @@
                     document.getElementById('videoGrid').innerHTML = '<div style="text-align: center; padding: 40px; color: #999;">搜索中...</div>';
                     document.getElementById('userGrid').innerHTML = '<div style="text-align: center; padding: 40px; color: #999;">搜索中...</div>';
                     
-                    // 调用搜索API
+                    // 首先尝试调用Bilibili搜索API
+                    const apiUrl = `/api/bilibili/search?keyword=${encodeURIComponent(keyword)}&page=${page}&pageSize=20`;
+                    console.log('调用Bilibili搜索API:', apiUrl);
+                    let response = await fetch(apiUrl);
+                    let data = await response.json();
+                    console.log('Bilibili API响应:', data);
+                    
+                    if (data.success) {
+                        console.log('Bilibili API调用成功，显示真实Bilibili数据');
+                        isBilibiliSearch = true;
+                        
+                        // Bilibili API成功，渲染视频结果
+                        if (data.videos && data.videos.length > 0) {
+                            renderVideos(data.videos);
+                            document.getElementById('videoResults').style.display = 'block';
+                            
+                            // 计算总页数并显示翻页控件
+                            const totalResults = data.total || data.videos.length;
+                            totalPages = Math.ceil(totalResults / 20);
+                            updatePagination();
+                        } else {
+                            document.getElementById('videoGrid').innerHTML = '<div style="text-align: center; padding: 40px; color: #999;">没有找到相关视频</div>';
+                            document.getElementById('videoResults').style.display = 'block';
+                            document.getElementById('videoPagination').style.display = 'none';
+                        }
+                        
+                        // 隐藏用户结果（Bilibili API只返回视频）
+                        document.getElementById('userResults').style.display = 'none';
+                        
+                        // 隐藏无结果提示
+                        document.getElementById('noResults').style.display = 'none';
+                        
+                        // 更新结果计数
+                        const totalResults = data.total || data.videos.length;
+                        document.getElementById('resultCount').textContent = `搜索 "${keyword}" 的结果 (共${totalResults}个) ✓ 正在显示Bilibili实时数据`;
+                    } else if (data.error === 'BILIBILI_API_ERROR') {
+                        // Bilibili API失败，回退到本地搜索
+                        console.log('Bilibili API暂时不可用，使用本地搜索作为备用方案');
+                        document.getElementById('videoGrid').innerHTML = '<div style="text-align: center; padding: 20px; color: #666; font-size: 14px;">正在使用本地数据搜索...</div>';
+                        await performLocalSearch(keyword);
+                    } else {
+                        throw new Error(data.message || '搜索失败');
+                    }
+                } catch (error) {
+                    console.error('Bilibili搜索失败，使用本地搜索:', error);
+                    await performLocalSearch(keyword);
+                }
+            }
+            
+            // 本地搜索备用方案
+            async function performLocalSearch(keyword) {
+                try {
+                    // 调用本地搜索API
                     const response = await fetch(`/api/search/all?keyword=${encodeURIComponent(keyword)}`);
                     const data = await response.json();
                     
                     if (data.success) {
                         // 渲染视频结果
                         if (data.videos && data.videos.length > 0) {
-                            renderVideos(data.videos);
+                            renderLocalVideos(data.videos);
                             document.getElementById('videoResults').style.display = 'block';
                         } else {
                             document.getElementById('videoGrid').innerHTML = '<div style="text-align: center; padding: 40px; color: #999;">没有找到相关视频</div>';
@@ -664,12 +825,12 @@
                         
                         // 更新结果计数
                         const totalResults = (data.totalVideos || 0) + (data.totalUsers || 0);
-                        document.getElementById('resultCount').textContent = `搜索 "${keyword}" 的结果 (共${totalResults}个)`;
+                        document.getElementById('resultCount').textContent = `搜索 "${keyword}" 的结果 (本地数据，共${totalResults}个)`;
                     } else {
-                        throw new Error(data.message || '搜索失败');
+                        throw new Error(data.message || '本地搜索失败');
                     }
                 } catch (error) {
-                    console.error('搜索失败:', error);
+                    console.error('本地搜索也失败:', error);
                     
                     // 显示错误信息
                     document.getElementById('videoGrid').innerHTML = '<div style="text-align: center; padding: 40px; color: #999;">搜索失败，请稍后重试</div>';
@@ -681,9 +842,10 @@
                 }
             }
             
-            // 渲染视频
+            // 渲染Bilibili视频
             function renderVideos(videos) {
                 const videoGrid = document.getElementById('videoGrid');
+                // 清空视频网格
                 videoGrid.innerHTML = '';
                 
                 videos.forEach(video => {
@@ -693,7 +855,39 @@
                     
                     videoCard.innerHTML = `
                         <div class="video-thumb">
-                            <img src="/proxy/image?url=${encodeURIComponent(video.thumb)}" alt="${video.title}">
+                            <img src="/proxy/image?url=${encodeURIComponent(video.thumb || 'https://via.placeholder.com/300x200/00A1D6/FFFFFF?text=Video')}" alt="${video.title || '视频'}" onerror="this.src='https://via.placeholder.com/300x200/00A1D6/FFFFFF?text=Video'">
+                            <div class="video-duration">${video.duration || '00:00'}</div>
+                        </div>
+                        <div class="video-info">
+                            <div class="video-title">${video.title || '未知标题'}</div>
+                            <div class="video-stats">
+                                <span>${video.viewCount || '0'}播放</span>
+                                <span>${video.duration || '00:00'}</span>
+                            </div>
+                            <div class="video-up">
+                                <img src="/proxy/image?url=${encodeURIComponent(video.upAvatar || 'https://via.placeholder.com/40x40/FB7299/FFFFFF?text=UP')}" alt="${video.upName || 'UP主'}" onerror="this.src='https://via.placeholder.com/40x40/FB7299/FFFFFF?text=UP'">
+                                <span>${video.upName || '未知UP主'}</span>
+                            </div>
+                        </div>
+                    `;
+                    
+                    videoGrid.appendChild(videoCard);
+                });
+            }
+            
+            // 渲染本地视频
+            function renderLocalVideos(videos) {
+                const videoGrid = document.getElementById('videoGrid');
+                videoGrid.innerHTML = '';
+                
+                videos.forEach(video => {
+                    const videoCard = document.createElement('div');
+                    videoCard.className = 'video-card';
+                    videoCard.onclick = () => playLocalVideo(video.id);
+                    
+                    videoCard.innerHTML = `
+                        <div class="video-thumb">
+                            <img src="/proxy/image?url=${encodeURIComponent(video.thumb)}" alt="${video.title}" onerror="this.src='https://via.placeholder.com/300x200/00A1D6/FFFFFF?text=Video'">
                             <div class="video-duration">${video.duration}</div>
                         </div>
                         <div class="video-info">
@@ -703,7 +897,7 @@
                                 <span>${video.duration}</span>
                             </div>
                             <div class="video-up">
-                                <img src="/proxy/image?url=${encodeURIComponent(video.upAvatar)}" alt="${video.upName}">
+                                <img src="/proxy/image?url=${encodeURIComponent(video.upAvatar)}" alt="${video.upName}" onerror="this.src='https://via.placeholder.com/40x40/FB7299/FFFFFF?text=UP'">
                                 <span>${video.upName}</span>
                             </div>
                         </div>
@@ -736,17 +930,142 @@
                 });
             }
             
-            // 播放视频
-            function playVideo(videoId) {
+            // 播放视频 - 跳转到我们的播放页面
+            function playVideo(bvid) {
+                if (bvid) {
+                    // 跳转到我们的播放页面，传递Bilibili视频ID
+                    window.location.href = `/play.html?bvid=${bvid}&source=bilibili`;
+                }
+            }
+            
+            // 播放本地视频
+            function playLocalVideo(videoId) {
                 if (videoId && videoId > 0) {
                     window.location.href = `/play/${videoId}`;
                 }
             }
             
+            // 更新翻页控件
+            function updatePagination() {
+                const pagination = document.getElementById('videoPagination');
+                const prevBtn = document.getElementById('prevPage');
+                const nextBtn = document.getElementById('nextPage');
+                const pageNumbers = document.getElementById('pageNumbers');
+                
+                if (totalPages <= 1) {
+                    pagination.style.display = 'none';
+                    return;
+                }
+                
+                pagination.style.display = 'flex';
+                prevBtn.disabled = currentPage <= 1;
+                nextBtn.disabled = currentPage >= totalPages;
+                
+                // 生成页码按钮
+                pageNumbers.innerHTML = '';
+                
+                // 计算显示的页码范围
+                let startPage = Math.max(1, currentPage - 2);
+                let endPage = Math.min(totalPages, currentPage + 2);
+                
+                // 确保显示5个页码（如果可能）
+                if (endPage - startPage < 4) {
+                    if (startPage === 1) {
+                        endPage = Math.min(totalPages, startPage + 4);
+                    } else {
+                        startPage = Math.max(1, endPage - 4);
+                    }
+                }
+                
+                // 添加第一页和省略号
+                if (startPage > 1) {
+                    addPageButton(1);
+                    if (startPage > 2) {
+                        addEllipsis();
+                    }
+                }
+                
+                // 添加页码按钮
+                for (let i = startPage; i <= endPage; i++) {
+                    addPageButton(i);
+                }
+                
+                // 添加最后一页和省略号
+                if (endPage < totalPages) {
+                    if (endPage < totalPages - 1) {
+                        addEllipsis();
+                    }
+                    addPageButton(totalPages);
+                }
+            }
+            
+            // 添加页码按钮
+            function addPageButton(pageNum) {
+                const pageNumbers = document.getElementById('pageNumbers');
+                const button = document.createElement('button');
+                button.className = 'page-btn';
+                button.textContent = pageNum;
+                
+                if (pageNum === currentPage) {
+                    button.classList.add('active');
+                }
+                
+                button.addEventListener('click', () => {
+                    if (pageNum !== currentPage) {
+                        performSearch(currentKeyword, pageNum);
+                    }
+                });
+                
+                pageNumbers.appendChild(button);
+            }
+            
+            // 添加省略号
+            function addEllipsis() {
+                const pageNumbers = document.getElementById('pageNumbers');
+                const span = document.createElement('span');
+                span.textContent = '...';
+                span.style.color = '#999';
+                span.style.padding = '0 8px';
+                pageNumbers.appendChild(span);
+            }
+            
+            // 上一页
+            function prevPage() {
+                if (currentPage > 1) {
+                    performSearch(currentKeyword, currentPage - 1);
+                }
+            }
+            
+            // 下一页
+            function nextPage() {
+                if (currentPage < totalPages) {
+                    performSearch(currentKeyword, currentPage + 1);
+                }
+            }
+            
+            // 跳转到指定页面
+            function jumpToPage() {
+                const input = document.getElementById('jumpPageInput');
+                const pageNum = parseInt(input.value);
+                
+                if (isNaN(pageNum) || pageNum < 1 || pageNum > totalPages) {
+                    alert(`请输入有效的页码（1-${totalPages}）`);
+                    input.value = '';
+                    input.focus();
+                    return;
+                }
+                
+                if (pageNum !== currentPage) {
+                    performSearch(currentKeyword, pageNum);
+                }
+                
+                input.value = '';
+            }
+            
             // 查看用户
             function viewUser(userId) {
                 if (userId && userId > 0) {
-                    window.location.href = `profile.html?user=${userId}`;
+                    window.location.href = `/profile.html?user=${userId}`;
                 }
             }
             

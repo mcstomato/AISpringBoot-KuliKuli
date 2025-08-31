@@ -41,15 +41,60 @@
             margin-right: 20px;
         }
         
-        .logo img {
-            height: 36px;
-        }
+
         
         .logo span {
             color: #FB7299;
             font-size: 20px;
             font-weight: bold;
             margin-left: 5px;
+        }
+        
+        /* 音频波形样式 */
+        .audio-wave {
+            display: flex;
+            align-items: flex-end;
+            gap: 3px;
+            height: 36px;
+            margin-right: 5px;
+        }
+        
+        .wave-bar {
+            width: 4px;
+            background: #FB7299;
+            border-radius: 2px;
+            animation: waveAnimation 1.2s ease-in-out infinite;
+        }
+        
+        .wave-bar:nth-child(1) {
+            height: 20px;
+            animation-delay: 0s;
+        }
+        
+        .wave-bar:nth-child(2) {
+            height: 28px;
+            animation-delay: 0.2s;
+        }
+        
+        .wave-bar:nth-child(3) {
+            height: 16px;
+            animation-delay: 0.4s;
+        }
+        
+        .wave-bar:nth-child(4) {
+            height: 32px;
+            animation-delay: 0.6s;
+        }
+        
+        @keyframes waveAnimation {
+            0%, 100% {
+                transform: scaleY(1);
+                opacity: 0.8;
+            }
+            50% {
+                transform: scaleY(1.5);
+                opacity: 1;
+            }
         }
         
         .main-nav {
@@ -84,6 +129,27 @@
             border-left: 6px solid transparent;
             border-right: 6px solid transparent;
             border-top: 6px solid #FB7299;
+            animation: slideIn 0.3s ease-out forwards;
+        }
+        
+        .main-nav a {
+            transition: all 0.3s ease;
+        }
+        
+        .main-nav a:hover {
+            color: #FB7299;
+            transform: translateY(-2px);
+        }
+        
+        @keyframes slideIn {
+            from {
+                width: 0;
+                opacity: 0;
+            }
+            to {
+                width: 12px;
+                opacity: 1;
+            }
         }
         
         .search-box {
@@ -108,6 +174,21 @@
             color: #999;
         }
         
+        .search-btn {
+            background: #FB7299;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-left: 8px;
+        }
+        
+        .search-btn:hover {
+            background: #e65a7f;
+        }
+        
         .user-actions {
             display: flex;
             align-items: center;
@@ -127,6 +208,41 @@
             padding: 8px 16px !important;
             margin-left: 10px;
         }
+
+        /* 登录后头像与昵称 */
+        .user-box { display: none; align-items: center; margin-left: 10px; }
+        .user-avatar { 
+            width: 36px; height: 36px; border-radius: 50%; background: #000 center/cover no-repeat; 
+            cursor: pointer; transition: all 0.3s ease; position: relative;
+        }
+        .user-avatar:hover { 
+            transform: scale(1.1); box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .user-nickname { font-size: 12px; color: #505050; margin-top: 4px; text-align: center; max-width: 80px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        /* 下拉菜单 */
+        .dropdown-menu { 
+            position: absolute; top: 100%; right: 0; margin-top: 8px; 
+            background: white; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); 
+            min-width: 120px; opacity: 0; visibility: hidden; transform: translateY(-10px); 
+            transition: all 0.3s ease; z-index: 1000;
+        }
+        .user-avatar:hover .dropdown-menu { 
+            opacity: 1; visibility: visible; transform: translateY(0);
+        }
+        .dropdown-menu::before { 
+            content: ''; position: absolute; top: -6px; right: 12px; 
+            width: 0; height: 0; border-left: 6px solid transparent; 
+            border-right: 6px solid transparent; border-bottom: 6px solid white;
+        }
+        .dropdown-menu a { 
+            display: block; padding: 10px 16px; color: #333; text-decoration: none; 
+            font-size: 13px; transition: background-color 0.2s;
+        }
+        .dropdown-menu a:hover { background-color: #f5f5f5; }
+        .dropdown-menu a:first-child { border-radius: 8px 8px 0 0; }
+        .dropdown-menu a:last-child { border-radius: 0 0 8px 8px; }
+        .dropdown-menu .divider { height: 1px; background: #eee; margin: 0; }
         
         /* 主要内容区 */
         .main-container {
@@ -376,23 +492,29 @@
     <header class="header">
         <div class="nav-container">
             <div class="logo">
-                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDI0IDMwMCI+PHBhdGggZmlsbD0iI0ZCNzI5OSIgZD0iTTE2MC44MiA3MC4wNGMtMjYuNjcgMC00OC4yIDIxLjUzLTQ4LjIgNDh2ODcuNTVjMCAyNi40NyAyMS41MyA0OCA0OCA0OCAyNi40NyAwIDQ4LTIxLjUzIDQ4LTQ4di04Ny41NWMwLTI2LjQ3LTIxLjUzLTQ4LTQ4LTQ4em0zNDUuMDQgMGMtMjYuNDcgMC00OCAyMS41My00OCA0OHY4Ny41NWMwIDI2LjQ3IDIxLjUzIDQ4IDQ4IDQ4czQ4LTIxLjUzIDQ4LTQ4di04Ny41NWMwLTI2LjQ3LTIxLjUzLTQ4LTQ4LTQ4em0tMTcyLjUyIDI0YzAtMjYuNDcgMjEuNTMtNDggNDgtNDggMjYuNDcgMCA0OCAyMS41MyA0OCA0OHYxNTUuNTNjMCAyNi40Ny0yMS41MyA0OC00OCA0OC0yNi40NyAwLTQ4LTIxLjUzLTQ4LTQ4Vjk0LjA0em0zNDUuMDQgMGMwLTI2LjQ3IDIxLjUzLTQ4IDQ4LTQ4czQ4IDIxLjUzIDQ4IDQ4djE1NS41M2MwIDI2LjQ3LTIxLjUzIDQ4LTQ4IDQ4cy00OC0yMS41My00OC00OFY5NC4wNHoiLz48L3N2Zz4=" alt="Bilibili">
+                <div class="audio-wave">
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                </div>
                 <span>酷哩酷哩</span>
             </div>
             
             <nav class="main-nav">
-                <a href="#" class="active">首页</a>
-                <a href="#">番剧</a>
-                <a href="#">直播</a>
-                <a href="#">游戏</a>
-                <a href="#">会员购</a>
-                <a href="#">漫画</a>
-                <a href="#">赛事</a>
+                <a href="index.html" class="active">首页</a>
+                <a href="anime.html">番剧</a>
+                <a href="live.html">直播</a>
+                <a href="game.html">游戏</a>
+                <a href="vip.html">会员购</a>
+                <a href="manga.html">漫画</a>
+                <a href="esports.html">赛事</a>
             </nav>
             
             <div class="search-box">
                 <i class="fas fa-search"></i>
-                <input type="text" placeholder="搜索视频、番剧、用户">
+                <input type="text" id="homeSearchInput" placeholder="搜索视频、番剧、用户">
+                <button class="search-btn" id="homeSearchBtn">搜索</button>
             </div>
             
             <div class="user-actions">
@@ -401,7 +523,18 @@
                 <a href="#">动态</a>
                 <a href="#">收藏</a>
                 <a href="#">历史</a>
-                <a href="#" class="upload-btn">未登录</a>
+                <a href="auth.html" class="upload-btn" id="loginEntry">未登录</a>
+                <div class="user-box" id="userBox">
+                    <div class="user-avatar" id="userAvatar">
+                        <div class="dropdown-menu">
+                            <a href="/profile.html" id="profileBtn"><i class="fas fa-user"></i> 个人主页</a>
+                            <a href="#" id="settingsBtn"><i class="fas fa-cog"></i> 设置页面</a>
+                            <div class="divider"></div>
+                            <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> 退出登录</a>
+                        </div>
+                    </div>
+                    <div class="user-nickname" id="userNickname"></div>
+                </div>
             </div>
         </div>
     </header>
@@ -425,18 +558,60 @@
         <!-- 推荐区 -->
         <div class="section-title">
             <h2>推荐视频</h2>
-            <a href="#">查看更多 <i class="fas fa-chevron-right"></i></a>
+            <a href="more.html?section=recommend">查看更多 <i class="fas fa-chevron-right"></i></a>
         </div>
         
         <div class="video-grid" id="grid-recommend"></div>
         
-        <!-- 动画区 -->
+
+        
+        <!-- 音乐区 -->
         <div class="section-title">
-            <h2>动画区</h2>
-            <a href="#">查看更多 <i class="fas fa-chevron-right"></i></a>
+            <h2>音乐区</h2>
+            <a href="more.html?section=music">查看更多 <i class="fas fa-chevron-right"></i></a>
         </div>
         
-        <div class="video-grid" id="grid-anime"></div>
+        <div class="video-grid" id="grid-music"></div>
+        
+        <!-- 舞蹈区 -->
+        <div class="section-title">
+            <h2>舞蹈区</h2>
+            <a href="more.html?section=dance">查看更多 <i class="fas fa-chevron-right"></i></a>
+        </div>
+        
+        <div class="video-grid" id="grid-dance"></div>
+        
+        <!-- 游戏区 -->
+        <div class="section-title">
+            <h2>游戏区</h2>
+            <a href="more.html?section=game">查看更多 <i class="fas fa-chevron-right"></i></a>
+        </div>
+        
+        <div class="video-grid" id="grid-game"></div>
+        
+        <!-- 科技区 -->
+        <div class="section-title">
+            <h2>科技区</h2>
+            <a href="more.html?section=tech">查看更多 <i class="fas fa-chevron-right"></i></a>
+        </div>
+        
+        <div class="video-grid" id="grid-tech"></div>
+        
+        <!-- 生活区 -->
+        <div class="section-title">
+            <h2>生活区</h2>
+            <a href="more.html?section=life">查看更多 <i class="fas fa-chevron-right"></i></a>
+        </div>
+        
+        <div class="video-grid" id="grid-life"></div>
+        
+        <!-- 鬼畜区 -->
+        <div class="section-title">
+            <h2>鬼畜区</h2>
+            <a href="more.html?section=kichiku">查看更多 <i class="fas fa-chevron-right"></i></a>
+        </div>
+        
+        <div class="video-grid" id="grid-kichiku"></div>
     </main>
 
     <!-- 底部 -->
@@ -498,7 +673,12 @@
             }
             // 初始先渲染占位各4张
             renderPlaceholdersTo('grid-recommend', 4);
-            renderPlaceholdersTo('grid-anime', 4);
+            renderPlaceholdersTo('grid-music', 4);
+            renderPlaceholdersTo('grid-dance', 4);
+            renderPlaceholdersTo('grid-game', 4);
+            renderPlaceholdersTo('grid-tech', 4);
+            renderPlaceholdersTo('grid-life', 4);
+            renderPlaceholdersTo('grid-kichiku', 4);
 
             function renderCard(v){
                 return `
@@ -520,42 +700,120 @@
                     </div>
                 </div>`;
             }
-            fetch('/api/videos/random').then(r=>r.json()).then(list=>{
-                if(!Array.isArray(list) || list.length === 0){ return; }
-                const a = list.slice(0,4);
-                const b = list.slice(4,8);
-                const grid1 = document.getElementById('grid-recommend');
-                const grid2 = document.getElementById('grid-anime');
-                if(grid1 && a.length){ grid1.innerHTML = a.map(renderCard).join(''); }
-                if(grid2 && b.length){ grid2.innerHTML = b.map(renderCard).join(''); }
-                // 绑定悬停效果到新卡片
+            
+            // 渲染Bilibili API视频卡片
+            function renderBilibiliCard(video){
+                return `
+                <div class="video-card" data-bvid="${video.bvid || ''}" onclick="playBilibiliVideo('${video.bvid || ''}')">
+                    <div class="video-thumb">
+                        <img src="/proxy/image?url=${encodeURIComponent(video.pic || '')}" alt="cover"/>
+                        <div class="video-duration">${video.duration || ''}</div>
+                    </div>
+                    <div class="video-info">
+                        <div class="video-title">${video.title || ''}</div>
+                        <div class="video-stats">
+                            <span><i class="fas fa-play"></i> ${video.play || ''}</span>
+                            <span><i class="fas fa-comment"></i> ${video.video_review || ''}</span>
+                        </div>
+                        <div class="video-up">
+                            <img src="/proxy/image?url=${encodeURIComponent(video.upic || '')}" alt="up"/>
+                            <span>${video.author || ''}</span>
+                        </div>
+                    </div>
+                </div>`;
+            }
+            // 定义分区配置并加载数据
+            (function() {
+                const sections = [
+                    { id: 'grid-recommend', name: '推荐', api: '/api/bilibili/recommend' },
+                    { id: 'grid-music', name: '音乐', api: '/api/bilibili/channel/3' },
+                    { id: 'grid-dance', name: '舞蹈', api: '/api/bilibili/channel/129' },
+                    { id: 'grid-game', name: '游戏', api: '/api/bilibili/channel/4' },
+                    { id: 'grid-tech', name: '科技', api: '/api/bilibili/channel/36' },
+                    { id: 'grid-life', name: '生活', api: '/api/bilibili/channel/160' },
+                    { id: 'grid-kichiku', name: '鬼畜', api: '/api/bilibili/channel/119' }
+                ];
+                
+                // 为每个分区加载数据
+                sections.forEach(section => {
+                    loadSectionVideos(section);
+                });
+                
+                // 加载分区视频的函数
+                function loadSectionVideos(section) {
+                    console.log(`开始加载${section.name}分区:`, section.api);
+                    fetch(section.api)
+                        .then(r => {
+                            console.log(`${section.name}分区响应状态:`, r.status);
+                            return r.json();
+                        })
+                        .then(data => {
+                            console.log(`${section.name}分区数据:`, data);
+                            if (data.success && Array.isArray(data.videos) && data.videos.length > 0) {
+                                const grid = document.getElementById(section.id);
+                                if (grid) {
+                                    // 随机选择4个视频，确保每次刷新都不同
+                                    const shuffledVideos = [...data.videos].sort(() => Math.random() - 0.5);
+                                    const selectedVideos = shuffledVideos.slice(0, 4);
+                                    grid.innerHTML = selectedVideos.map(renderBilibiliCard).join('');
+                                    console.log(`${section.name}分区加载成功，随机显示${selectedVideos.length}个视频`);
+                                }
+                            } else {
+                                console.log(`${section.name}分区数据无效，使用备用方案`);
+                                loadLocalFallback(section.id);
+                            }
+                        })
+                        .catch(error => {
+                            console.error(`加载${section.name}分区失败:`, error);
+                            // 失败时使用本地数据作为备用
+                            loadLocalFallback(section.id);
+                            });
+                }
+                
+                // 备用本地数据加载
+                function loadLocalFallback(gridId) {
+                    console.log(`开始加载备用数据:`, gridId);
+                    fetch('/api/videos/random')
+                        .then(r => {
+                            console.log(`备用数据响应状态:`, r.status);
+                            return r.json();
+                        })
+                        .then(list => {
+                            console.log(`备用数据:`, list);
+                            if (Array.isArray(list) && list.length >= 4) {
+                                const grid = document.getElementById(gridId);
+                                if (grid) {
+                                    grid.innerHTML = list.slice(0, 4).map(renderCard).join('');
+                                    console.log(`${gridId}备用数据加载成功`);
+                                }
+                            } else {
+                                console.log(`${gridId}备用数据无效或不足`);
+                            }
+                        })
+                        .catch(error => {
+                            console.error(`${gridId}备用数据加载失败:`, error);
+                        });
+                }
+            })();
+            
+            // 视频卡片悬停效果
+            function addHoverEffects() {
                 const videoCards = document.querySelectorAll('.video-card');
                 videoCards.forEach(card => {
                     card.addEventListener('mouseenter', () => {
                         card.style.transform = 'translateY(-5px)';
                         card.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.1)';
                     });
+                    
                     card.addEventListener('mouseleave', () => {
                         card.style.transform = 'translateY(0)';
                         card.style.boxShadow = 'none';
                     });
                 });
-            }).catch(()=>{
-                // 失败则保留占位卡片
-            });
-            // 视频卡片悬停效果
-            const videoCards = document.querySelectorAll('.video-card');
-            videoCards.forEach(card => {
-                card.addEventListener('mouseenter', () => {
-                    card.style.transform = 'translateY(-5px)';
-                    card.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.1)';
-                });
-                
-                card.addEventListener('mouseleave', () => {
-                    card.style.transform = 'translateY(0)';
-                    card.style.boxShadow = 'none';
-                });
-            });
+            }
+            
+            // 延迟添加悬停效果，确保卡片已加载
+            setTimeout(addHoverEffects, 1000);
             
             // 播放视频函数
             window.playVideo = function(videoId) {
@@ -564,15 +822,156 @@
                 }
             };
             
+            // 播放Bilibili视频函数
+            window.playBilibiliVideo = function(bvid) {
+                if (bvid) {
+                    window.location.href = `/play.html?bvid=${bvid}&source=bilibili`;
+                }
+            };
+            
             // 导航菜单激活状态
             const navLinks = document.querySelectorAll('.main-nav a');
             navLinks.forEach(link => {
                 link.addEventListener('click', (e) => {
-                    e.preventDefault();
+                    // 移除所有链接的active状态
                     navLinks.forEach(l => l.classList.remove('active'));
+                    // 为当前点击的链接添加active状态
                     link.classList.add('active');
+                    
+                    // 如果是首页链接，阻止默认行为并刷新当前页面
+                    if (link.href.includes('index.html')) {
+                        e.preventDefault();
+                        location.reload();
+                    }
+                    // 其他链接正常跳转，不阻止默认行为
                 });
             });
+
+            // 用户状态检查函数
+            async function checkUserStatus() {
+                try {
+                    const raw = localStorage.getItem('currentUser');
+                    if (!raw) return;
+                    
+                    const user = JSON.parse(raw);
+                    if (!user || !user.login_account) return;
+                    
+                    const response = await fetch('/api/users/check-status', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            login_account: user.login_account
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        // 用户存在，更新用户信息
+                        localStorage.setItem('currentUser', JSON.stringify(data.user));
+                        renderUserInfo(data.user);
+                    } else {
+                        // 用户不存在，退出登录
+                        console.log('用户不存在，自动退出登录');
+                        localStorage.removeItem('currentUser');
+                        location.reload();
+                    }
+                } catch (error) {
+                    console.error('检查用户状态失败:', error);
+                    // 网络错误时也退出登录
+                    localStorage.removeItem('currentUser');
+                    location.reload();
+                }
+            }
+            
+            // 渲染用户信息函数
+            function renderUserInfo(user) {
+                const loginEntry = document.getElementById('loginEntry');
+                const userBox = document.getElementById('userBox');
+                const avatar = document.getElementById('userAvatar');
+                const nick = document.getElementById('userNickname');
+                
+                if (loginEntry) loginEntry.style.display = 'none';
+                if (userBox) userBox.style.display = 'flex';
+                
+                if (avatar) {
+                    if (user.avatar_url) {
+                        avatar.style.backgroundImage = `url('${user.avatar_url}')`;
+                    } else {
+                        avatar.style.backgroundImage = 'none';
+                        avatar.style.backgroundColor = '#000';
+                    }
+                }
+                
+                if (nick) nick.textContent = user.nickname || user.login_account || '';
+            }
+            
+            // 页面加载时检查用户状态
+            checkUserStatus();
+
+            // 退出登录功能
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (confirm('确定要退出登录吗？')) {
+                        localStorage.removeItem('currentUser');
+                        location.reload();
+                    }
+                });
+            }
+
+            // 设置页面功能（暂时为空）
+            const settingsBtn = document.getElementById('settingsBtn');
+            if (settingsBtn) {
+                settingsBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    alert('设置页面功能开发中...');
+                });
+            }
+            
+            // 主页搜索功能
+            const homeSearchBtn = document.getElementById('homeSearchBtn');
+            const homeSearchInput = document.getElementById('homeSearchInput');
+            
+            if (homeSearchBtn && homeSearchInput) {
+                homeSearchBtn.addEventListener('click', function() {
+                    const keyword = homeSearchInput.value.trim();
+                    if (keyword) {
+                        // 在新页面中打开搜索页面
+                        window.open(`/search.html?q=${encodeURIComponent(keyword)}`, '_blank');
+                    }
+                });
+                
+                homeSearchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        homeSearchBtn.click();
+                    }
+                });
+            }
+        });
+    </script>
+    <!-- Coze Web SDK -->
+    <script src="https://lf-cdn.coze.cn/obj/unpkg/flow-platform/chat-app-sdk/1.2.0-beta.10/libs/cn/index.js" defer></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', function () {
+            if (window.CozeWebSDK && window.CozeWebSDK.WebChatClient) {
+                new CozeWebSDK.WebChatClient({
+                    config: {
+                        bot_id: '7543881918996807714'
+                    },
+                    componentProps: {
+                        title: 'Coze'
+                    },
+                    auth: {
+                        type: 'token',
+                        token: 'pat_LTo4Bun6g0n6eNAvW1LFVADTNT0YfUjdCMngcT0HF8jVvhy4s4J70Xxly1VCEINL',
+                        onRefreshToken: function () { return 'pat_LTo4Bun6g0n6eNAvW1LFVADTNT0YfUjdCMngcT0HF8jVvhy4s4J70Xxly1VCEINL'; }
+                    }
+                });
+            }
         });
     </script>
 </body>
