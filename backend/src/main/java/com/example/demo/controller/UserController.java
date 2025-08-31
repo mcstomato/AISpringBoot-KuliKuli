@@ -5,8 +5,11 @@ import com.example.demo.model.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -23,7 +26,8 @@ public class UserController {
     private static final Pattern CHINESE_PATTERN = Pattern.compile("[\u4e00-\u9fa5]");
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody Map<String, String> body) {
+    public ResponseEntity<?> register(@RequestBody Map<String, String> body, HttpServletRequest request) {
+        logAccessIP(request, "/api/users/register");
         String loginAccount = body.getOrDefault("login_account", "").trim();
         String nickname = body.getOrDefault("nickname", "").trim();
         String password = body.getOrDefault("password", "").trim();
@@ -91,7 +95,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Map<String, String> body) {
+    public ResponseEntity<?> login(@RequestBody Map<String, String> body, HttpServletRequest request) {
+        logAccessIP(request, "/api/users/login");
         String loginAccount = body.getOrDefault("login_account", "").trim();
         String password = body.getOrDefault("password", "").trim();
 
@@ -140,7 +145,8 @@ public class UserController {
     }
 
     @PostMapping("/check-status")
-    public ResponseEntity<?> checkUserStatus(@RequestBody Map<String, String> body) {
+    public ResponseEntity<?> checkUserStatus(@RequestBody Map<String, String> body, HttpServletRequest request) {
+        logAccessIP(request, "/api/users/check-status");
         String loginAccount = body.getOrDefault("login_account", "").trim();
         
         Map<String, Object> result = new HashMap<>();
@@ -178,7 +184,8 @@ public class UserController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<?> updateProfile(@RequestBody Map<String, String> body) {
+    public ResponseEntity<?> updateProfile(@RequestBody Map<String, String> body, HttpServletRequest request) {
+        logAccessIP(request, "/api/users/update");
         String nickname = body.getOrDefault("nickname", "").trim();
         String password = body.getOrDefault("password", "").trim();
         String bio = body.getOrDefault("bio", "").trim();
@@ -238,6 +245,41 @@ public class UserController {
                     result.put("message", "用户不存在");
                     return ResponseEntity.badRequest().body(result);
                 });
+    }
+
+    /**
+     * 记录访问IP地址
+     */
+    private void logAccessIP(HttpServletRequest request, String endpoint) {
+        String clientIP = getClientIP(request);
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        System.out.println("🌐 访问记录 | IP: " + clientIP + " | 路径: " + endpoint + " | 时间: " + timestamp);
+    }
+    
+    /**
+     * 获取客户端真实IP地址
+     */
+    private String getClientIP(HttpServletRequest request) {
+        // 优先获取X-Forwarded-For头（代理服务器转发）
+        String xForwardedFor = request.getHeader("X-Forwarded-For");
+        if (xForwardedFor != null && !xForwardedFor.isEmpty()) {
+            return xForwardedFor.split(",")[0].trim();
+        }
+        
+        // 获取X-Real-IP头（Nginx等代理服务器设置）
+        String xRealIP = request.getHeader("X-Real-IP");
+        if (xRealIP != null && !xRealIP.isEmpty()) {
+            return xRealIP;
+        }
+        
+        // 获取X-Forwarded-For-Original头
+        String xForwardedForOriginal = request.getHeader("X-Forwarded-For-Original");
+        if (xForwardedForOriginal != null && !xForwardedForOriginal.isEmpty()) {
+            return xForwardedForOriginal;
+        }
+        
+        // 最后获取直接连接的IP地址
+        return request.getRemoteAddr();
     }
 }
 

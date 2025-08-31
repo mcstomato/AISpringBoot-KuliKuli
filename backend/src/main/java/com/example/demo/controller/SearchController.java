@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +27,8 @@ public class SearchController {
     private UserRepository userRepository;
 
     @GetMapping("/videos")
-    public ResponseEntity<Map<String, Object>> searchVideos(@RequestParam String keyword) {
+    public ResponseEntity<Map<String, Object>> searchVideos(@RequestParam String keyword, HttpServletRequest request) {
+        logAccessIP(request, "/api/search/videos?keyword=" + keyword);
         try {
             List<BilibiliVideo> videos = videoRepository.findByTitleContainingIgnoreCaseOrUpNameContainingIgnoreCase(keyword, keyword);
             
@@ -56,7 +60,8 @@ public class SearchController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity<Map<String, Object>> searchUsers(@RequestParam String keyword) {
+    public ResponseEntity<Map<String, Object>> searchUsers(@RequestParam String keyword, HttpServletRequest request) {
+        logAccessIP(request, "/api/search/users?keyword=" + keyword);
         try {
             List<User> users = userRepository.findByNicknameContainingIgnoreCaseOrLoginAccountContainingIgnoreCase(keyword, keyword);
             
@@ -87,7 +92,8 @@ public class SearchController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<Map<String, Object>> searchAll(@RequestParam String keyword) {
+    public ResponseEntity<Map<String, Object>> searchAll(@RequestParam String keyword, HttpServletRequest request) {
+        logAccessIP(request, "/api/search/all?keyword=" + keyword);
         try {
             // 搜索视频
             List<BilibiliVideo> videos = videoRepository.findByTitleContainingIgnoreCaseOrUpNameContainingIgnoreCase(keyword, keyword);
@@ -153,5 +159,40 @@ public class SearchController {
         } else {
             return String.format("%.1f万", followerCount / 10000.0);
         }
+    }
+
+    /**
+     * 记录访问IP地址
+     */
+    private void logAccessIP(HttpServletRequest request, String endpoint) {
+        String clientIP = getClientIP(request);
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        System.out.println("🌐 访问记录 | IP: " + clientIP + " | 路径: " + endpoint + " | 时间: " + timestamp);
+    }
+    
+    /**
+     * 获取客户端真实IP地址
+     */
+    private String getClientIP(HttpServletRequest request) {
+        // 优先获取X-Forwarded-For头（代理服务器转发）
+        String xForwardedFor = request.getHeader("X-Forwarded-For");
+        if (xForwardedFor != null && !xForwardedFor.isEmpty()) {
+            return xForwardedFor.split(",")[0].trim();
+        }
+        
+        // 获取X-Real-IP头（Nginx等代理服务器设置）
+        String xRealIP = request.getHeader("X-Real-IP");
+        if (xRealIP != null && !xRealIP.isEmpty()) {
+            return xRealIP;
+        }
+        
+        // 获取X-Forwarded-For-Original头
+        String xForwardedForOriginal = request.getHeader("X-Forwarded-For-Original");
+        if (xForwardedForOriginal != null && !xForwardedForOriginal.isEmpty()) {
+            return xForwardedForOriginal;
+        }
+        
+        // 最后获取直接连接的IP地址
+        return request.getRemoteAddr();
     }
 }
