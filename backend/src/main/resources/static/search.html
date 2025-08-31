@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>酷哩酷哩 (゜-゜)つロ 干杯~-kilikili</title>
+    <title>搜索 - 酷哩酷哩 (゜-゜)つロ 干杯~-kilikili</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * {
@@ -93,7 +93,7 @@
             border-radius: 8px;
             padding: 8px 12px;
             margin: 0 15px;
-            width: 300px;
+            width: 400px;
         }
         
         .search-box input {
@@ -102,6 +102,7 @@
             outline: none;
             width: 100%;
             padding: 0 8px;
+            font-size: 14px;
         }
         
         .search-box i {
@@ -185,47 +186,47 @@
             padding: 0 12px;
         }
         
-        /* 轮播图 */
-        .banner {
-            position: relative;
-            height: 220px;
+        /* 搜索过滤器 */
+        .search-filters {
+            background: white;
             border-radius: 8px;
-            overflow: hidden;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .filter-tabs {
+            display: flex;
+            border-bottom: 1px solid #eee;
             margin-bottom: 20px;
         }
         
-        .banner-img {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(120deg, #00A1D6, #FB7299);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-size: 32px;
-            font-weight: bold;
+        .filter-tab {
+            padding: 12px 24px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            color: #666;
         }
         
-        .banner-dots {
-            position: absolute;
-            bottom: 15px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
+        .filter-tab.active {
+            color: #FB7299;
+            border-bottom-color: #FB7299;
         }
         
-        .banner-dots span {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.6);
-            margin: 0 4px;
+        .filter-tab:hover {
+            color: #FB7299;
         }
         
-        .banner-dots span.active {
-            background: white;
-            width: 16px;
-            border-radius: 4px;
+        .search-results {
+            margin-top: 20px;
+        }
+        
+        .result-count {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 20px;
         }
         
         /* 分区标题 */
@@ -344,6 +345,71 @@
             margin-right: 5px;
         }
         
+        /* 用户卡片网格 */
+        .user-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 16px;
+        }
+        
+        .user-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .user-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .user-avatar-large {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #000 center/cover no-repeat;
+            margin: 0 auto 12px;
+        }
+        
+        .user-name {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .user-stats {
+            color: #999;
+            font-size: 12px;
+        }
+        
+        /* 无结果提示 */
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+        
+        .no-results i {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #ddd;
+        }
+        
+        .no-results h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: #666;
+        }
+        
+        .no-results p {
+            font-size: 14px;
+            color: #999;
+        }
+        
         /* 底部 */
         .footer {
             background: white;
@@ -363,18 +429,17 @@
         .footer-links {
             display: flex;
             flex-wrap: wrap;
+            gap: 20px;
         }
         
         .footer-links a {
-            color: #999;
+            color: #666;
             text-decoration: none;
-            margin-right: 20px;
-            font-size: 12px;
-            margin-bottom: 10px;
+            font-size: 13px;
         }
         
         .footer-links a:hover {
-            color: #00A1D6;
+            color: #FB7299;
         }
         
         .copyright {
@@ -383,40 +448,29 @@
         }
         
         /* 响应式设计 */
-        @media (max-width: 992px) {
-            .video-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-        
         @media (max-width: 768px) {
-            .video-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .search-box {
-                width: 200px;
-            }
-            
-            .main-nav a {
-                padding: 8px 10px;
-                font-size: 13px;
-            }
-        }
-        
-        @media (max-width: 576px) {
-            .video-grid {
-                grid-template-columns: 1fr;
-            }
-            
             .nav-container {
-                flex-wrap: wrap;
+                flex-direction: column;
+                padding: 8px 0;
+            }
+            
+            .main-nav {
+                order: 2;
+                margin: 10px 0;
             }
             
             .search-box {
                 order: 3;
                 width: 100%;
                 margin: 10px 0 0 0;
+            }
+            
+            .video-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .user-grid {
+                grid-template-columns: repeat(3, 1fr);
             }
         }
     </style>
@@ -431,7 +485,8 @@
             </div>
             
             <nav class="main-nav">
-                <a href="#" class="active">首页</a>
+                <a href="/">首页</a>
+                <a href="#" class="active">搜索</a>
                 <a href="#">番剧</a>
                 <a href="#">直播</a>
                 <a href="#">游戏</a>
@@ -442,8 +497,8 @@
             
             <div class="search-box">
                 <i class="fas fa-search"></i>
-                <input type="text" id="homeSearchInput" placeholder="搜索视频、番剧、用户">
-                <button class="search-btn" id="homeSearchBtn">搜索</button>
+                <input type="text" id="searchInput" placeholder="搜索视频、番剧、用户" value="">
+                <button class="search-btn" id="searchBtn">搜索</button>
             </div>
             
             <div class="user-actions">
@@ -470,35 +525,42 @@
 
     <!-- 主要内容区 -->
     <main class="main-container">
-        <!-- 轮播图 -->
-        <div class="banner">
-            <div class="banner-img">
-                <span id="banner-text">加载中...</span>
+        <!-- 搜索过滤器 -->
+        <div class="search-filters">
+            <div class="filter-tabs">
+                <div class="filter-tab active" data-type="video">视频</div>
+                <div class="filter-tab" data-type="user">用户</div>
             </div>
-            <div class="banner-dots">
-                <span class="active"></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
+            
+            <div class="search-results">
+                <div class="result-count" id="resultCount">搜索 "..." 的结果</div>
+                
+                <!-- 视频结果 -->
+                <div id="videoResults" class="result-section">
+                    <div class="section-title">
+                        <h2>视频结果</h2>
+                        <a href="#" id="moreVideos">查看更多 <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                    <div class="video-grid" id="videoGrid"></div>
+                </div>
+                
+                <!-- 用户结果 -->
+                <div id="userResults" class="result-section" style="display: none;">
+                    <div class="section-title">
+                        <h2>用户结果</h2>
+                        <a href="#" id="moreUsers">查看更多 <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                    <div class="user-grid" id="userGrid"></div>
+                </div>
+                
+                <!-- 无结果提示 -->
+                <div id="noResults" class="no-results" style="display: none;">
+                    <i class="fas fa-search"></i>
+                    <h3>没有找到相关结果</h3>
+                    <p>试试其他关键词，或者检查拼写是否正确</p>
+                </div>
             </div>
         </div>
-        
-        <!-- 推荐区 -->
-        <div class="section-title">
-            <h2>推荐视频</h2>
-            <a href="#">查看更多 <i class="fas fa-chevron-right"></i></a>
-        </div>
-        
-        <div class="video-grid" id="grid-recommend"></div>
-        
-        <!-- 动画区 -->
-        <div class="section-title">
-            <h2>动画区</h2>
-            <a href="#">查看更多 <i class="fas fa-chevron-right"></i></a>
-        </div>
-        
-        <div class="video-grid" id="grid-anime"></div>
     </main>
 
     <!-- 底部 -->
@@ -514,128 +576,180 @@
                 <a href="#">侵权投诉</a>
             </div>
             <div class="copyright">
-                © 2023 kilikili为模仿页面. 仅供学习参考使用.
+                © 2024 酷哩酷哩. All rights reserved.
             </div>
         </div>
     </footer>
 
     <script>
-        // 简单的交互效果
         document.addEventListener('DOMContentLoaded', function() {
-            // 加载轮播文案
-            fetch('/api/banner').then(r => r.text()).then(text => {
-                const el = document.getElementById('banner-text');
-                if (el) {
-                    el.textContent = text || '哔哩哔哩干杯 (゜-゜)つロ';
+            // 获取URL参数中的搜索关键词
+            const urlParams = new URLSearchParams(window.location.search);
+            const searchKeyword = urlParams.get('q') || '';
+            
+            if (searchKeyword) {
+                document.getElementById('searchInput').value = searchKeyword;
+                performSearch(searchKeyword);
+            }
+            
+            // 搜索按钮点击事件
+            document.getElementById('searchBtn').addEventListener('click', function() {
+                const keyword = document.getElementById('searchInput').value.trim();
+                if (keyword) {
+                    performSearch(keyword);
+                    // 更新URL
+                    const newUrl = `/search.html?q=${encodeURIComponent(keyword)}`;
+                    window.history.pushState({}, '', newUrl);
                 }
-            }).catch(() => {
-                const el = document.getElementById('banner-text');
-                if (el) el.textContent = '哔哩哔哩干杯 (゜-゜)つロ';
             });
-
-            // 加载随机视频卡片
-            function renderPlaceholder(){
-                return `
-                <div class="video-card">
-                    <div class="video-thumb">
-                        <div style="width:100%;height:100%;background:#eee;"></div>
-                        <div class="video-duration">--:--</div>
-                    </div>
-                    <div class="video-info">
-                        <div class="video-title">加载中...</div>
-                        <div class="video-stats">
-                            <span><i class="fas fa-play"></i> -</span>
-                            <span><i class="fas fa-comment"></i> -</span>
-                        </div>
-                        <div class="video-up">
-                            <div style="width:20px;height:20px;border-radius:50%;background:#ddd;margin-right:5px;"></div>
-                            <span></span>
-                        </div>
-                    </div>
-                </div>`;
-            }
-            function renderPlaceholdersTo(gridId, count){
-                const grid = document.getElementById(gridId);
-                if(grid){ grid.innerHTML = Array.from({length: count}).map(renderPlaceholder).join(''); }
-            }
-            // 初始先渲染占位各4张
-            renderPlaceholdersTo('grid-recommend', 4);
-            renderPlaceholdersTo('grid-anime', 4);
-
-            function renderCard(v){
-                return `
-                <div class="video-card" data-video-id="${v.id || ''}" onclick="playVideo(${v.id || 0})">
-                    <div class="video-thumb">
-                        <img src="/proxy/image?url=${encodeURIComponent(v.coverUrl || '')}" alt="cover"/>
-                        <div class="video-duration">${v.duration || ''}</div>
-                    </div>
-                    <div class="video-info">
-                        <div class="video-title">${v.title || ''}</div>
-                        <div class="video-stats">
-                            <span><i class="fas fa-play"></i> ${v.views ?? ''}</span>
-                            <span><i class="fas fa-comment"></i> ${v.danmaku ?? ''}</span>
-                        </div>
-                        <div class="video-up">
-                            <img src="/proxy/image?url=${encodeURIComponent(v.upFaceUrl || '')}" alt="up"/>
-                            <span>${v.upName || v.up_name || ''}</span>
-                        </div>
-                    </div>
-                </div>`;
-            }
-            fetch('/api/videos/random').then(r=>r.json()).then(list=>{
-                if(!Array.isArray(list) || list.length === 0){ return; }
-                const a = list.slice(0,4);
-                const b = list.slice(4,8);
-                const grid1 = document.getElementById('grid-recommend');
-                const grid2 = document.getElementById('grid-anime');
-                if(grid1 && a.length){ grid1.innerHTML = a.map(renderCard).join(''); }
-                if(grid2 && b.length){ grid2.innerHTML = b.map(renderCard).join(''); }
-                // 绑定悬停效果到新卡片
-                const videoCards = document.querySelectorAll('.video-card');
-                videoCards.forEach(card => {
-                    card.addEventListener('mouseenter', () => {
-                        card.style.transform = 'translateY(-5px)';
-                        card.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.1)';
-                    });
-                    card.addEventListener('mouseleave', () => {
-                        card.style.transform = 'translateY(0)';
-                        card.style.boxShadow = 'none';
-                    });
-                });
-            }).catch(()=>{
-                // 失败则保留占位卡片
+            
+            // 回车键搜索
+            document.getElementById('searchInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    document.getElementById('searchBtn').click();
+                }
             });
-            // 视频卡片悬停效果
-            const videoCards = document.querySelectorAll('.video-card');
-            videoCards.forEach(card => {
-                card.addEventListener('mouseenter', () => {
-                    card.style.transform = 'translateY(-5px)';
-                    card.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.1)';
-                });
-                
-                card.addEventListener('mouseleave', () => {
-                    card.style.transform = 'translateY(0)';
-                    card.style.boxShadow = 'none';
+            
+            // 标签切换
+            const filterTabs = document.querySelectorAll('.filter-tab');
+            filterTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    filterTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const type = this.dataset.type;
+                    if (type === 'video') {
+                        document.getElementById('videoResults').style.display = 'block';
+                        document.getElementById('userResults').style.display = 'none';
+                    } else {
+                        document.getElementById('videoResults').style.display = 'none';
+                        document.getElementById('userResults').style.display = 'block';
+                    }
                 });
             });
             
-            // 播放视频函数
-            window.playVideo = function(videoId) {
+            // 执行搜索
+            async function performSearch(keyword) {
+                document.getElementById('resultCount').textContent = `搜索 "${keyword}" 的结果`;
+                
+                try {
+                    // 显示加载状态
+                    document.getElementById('videoGrid').innerHTML = '<div style="text-align: center; padding: 40px; color: #999;">搜索中...</div>';
+                    document.getElementById('userGrid').innerHTML = '<div style="text-align: center; padding: 40px; color: #999;">搜索中...</div>';
+                    
+                    // 调用搜索API
+                    const response = await fetch(`/api/search/all?keyword=${encodeURIComponent(keyword)}`);
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        // 渲染视频结果
+                        if (data.videos && data.videos.length > 0) {
+                            renderVideos(data.videos);
+                            document.getElementById('videoResults').style.display = 'block';
+                        } else {
+                            document.getElementById('videoGrid').innerHTML = '<div style="text-align: center; padding: 40px; color: #999;">没有找到相关视频</div>';
+                            document.getElementById('videoResults').style.display = 'block';
+                        }
+                        
+                        // 渲染用户结果
+                        if (data.users && data.users.length > 0) {
+                            renderUsers(data.users);
+                            document.getElementById('userResults').style.display = 'none'; // 默认显示视频结果
+                        } else {
+                            document.getElementById('userGrid').innerHTML = '<div style="text-align: center; padding: 40px; color: #999;">没有找到相关用户</div>';
+                        }
+                        
+                        // 隐藏无结果提示
+                        document.getElementById('noResults').style.display = 'none';
+                        
+                        // 更新结果计数
+                        const totalResults = (data.totalVideos || 0) + (data.totalUsers || 0);
+                        document.getElementById('resultCount').textContent = `搜索 "${keyword}" 的结果 (共${totalResults}个)`;
+                    } else {
+                        throw new Error(data.message || '搜索失败');
+                    }
+                } catch (error) {
+                    console.error('搜索失败:', error);
+                    
+                    // 显示错误信息
+                    document.getElementById('videoGrid').innerHTML = '<div style="text-align: center; padding: 40px; color: #999;">搜索失败，请稍后重试</div>';
+                    document.getElementById('userGrid').innerHTML = '<div style="text-align: center; padding: 40px; color: #999;">搜索失败，请稍后重试</div>';
+                    
+                    document.getElementById('noResults').style.display = 'none';
+                    document.getElementById('videoResults').style.display = 'block';
+                    document.getElementById('userResults').style.display = 'none';
+                }
+            }
+            
+            // 渲染视频
+            function renderVideos(videos) {
+                const videoGrid = document.getElementById('videoGrid');
+                videoGrid.innerHTML = '';
+                
+                videos.forEach(video => {
+                    const videoCard = document.createElement('div');
+                    videoCard.className = 'video-card';
+                    videoCard.onclick = () => playVideo(video.id);
+                    
+                    videoCard.innerHTML = `
+                        <div class="video-thumb">
+                            <img src="/proxy/image?url=${encodeURIComponent(video.thumb)}" alt="${video.title}">
+                            <div class="video-duration">${video.duration}</div>
+                        </div>
+                        <div class="video-info">
+                            <div class="video-title">${video.title}</div>
+                            <div class="video-stats">
+                                <span>${video.viewCount}播放</span>
+                                <span>${video.duration}</span>
+                            </div>
+                            <div class="video-up">
+                                <img src="/proxy/image?url=${encodeURIComponent(video.upAvatar)}" alt="${video.upName}">
+                                <span>${video.upName}</span>
+                            </div>
+                        </div>
+                    `;
+                    
+                    videoGrid.appendChild(videoCard);
+                });
+            }
+            
+            // 渲染用户
+            function renderUsers(users) {
+                const userGrid = document.getElementById('userGrid');
+                userGrid.innerHTML = '';
+                
+                users.forEach(user => {
+                    const userCard = document.createElement('div');
+                    userCard.className = 'user-card';
+                    userCard.onclick = () => viewUser(user.id);
+                    
+                    userCard.innerHTML = `
+                        <div class="user-avatar-large" style="background-image: url('/proxy/image?url=${encodeURIComponent(user.avatar)}')"></div>
+                        <div class="user-name">${user.name}</div>
+                        <div class="user-stats">
+                            <div>${user.videoCount}个视频</div>
+                            <div>${user.followerCount}粉丝</div>
+                        </div>
+                    `;
+                    
+                    userGrid.appendChild(userCard);
+                });
+            }
+            
+            // 播放视频
+            function playVideo(videoId) {
                 if (videoId && videoId > 0) {
                     window.location.href = `/play/${videoId}`;
                 }
-            };
+            }
             
-            // 导航菜单激活状态
-            const navLinks = document.querySelectorAll('.main-nav a');
-            navLinks.forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    navLinks.forEach(l => l.classList.remove('active'));
-                    link.classList.add('active');
-                });
-            });
-
+            // 查看用户
+            function viewUser(userId) {
+                if (userId && userId > 0) {
+                    window.location.href = `/profile.html?user=${userId}`;
+                }
+            }
+            
             // 用户状态检查函数
             async function checkUserStatus() {
                 try {
@@ -718,47 +832,6 @@
                 settingsBtn.addEventListener('click', function(e) {
                     e.preventDefault();
                     alert('设置页面功能开发中...');
-                });
-            }
-            
-            // 主页搜索功能
-            const homeSearchBtn = document.getElementById('homeSearchBtn');
-            const homeSearchInput = document.getElementById('homeSearchInput');
-            
-            if (homeSearchBtn && homeSearchInput) {
-                homeSearchBtn.addEventListener('click', function() {
-                    const keyword = homeSearchInput.value.trim();
-                    if (keyword) {
-                        // 在新页面中打开搜索页面
-                        window.open(`/search.html?q=${encodeURIComponent(keyword)}`, '_blank');
-                    }
-                });
-                
-                homeSearchInput.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        homeSearchBtn.click();
-                    }
-                });
-            }
-        });
-    </script>
-    <!-- Coze Web SDK -->
-    <script src="https://lf-cdn.coze.cn/obj/unpkg/flow-platform/chat-app-sdk/1.2.0-beta.10/libs/cn/index.js" defer></script>
-    <script>
-        window.addEventListener('DOMContentLoaded', function () {
-            if (window.CozeWebSDK && window.CozeWebSDK.WebChatClient) {
-                new CozeWebSDK.WebChatClient({
-                    config: {
-                        bot_id: '7543881918996807714'
-                    },
-                    componentProps: {
-                        title: 'Coze'
-                    },
-                    auth: {
-                        type: 'token',
-                        token: 'pat_LTo4Bun6g0n6eNAvW1LFVADTNT0YfUjdCMngcT0HF8jVvhy4s4J70Xxly1VCEINL',
-                        onRefreshToken: function () { return 'pat_LTo4Bun6g0n6eNAvW1LFVADTNT0YfUjdCMngcT0HF8jVvhy4s4J70Xxly1VCEINL'; }
-                    }
                 });
             }
         });

@@ -16,6 +16,7 @@ D:\认识实习GIT\backend\src\main\java\com\example\demo\Application.java
 D:\认识实习GIT\backend\src\main\java\com\example\demo\controller\UserController.java
 D:\认识实习GIT\backend\src\main\java\com\example\demo\dao\BannerMessageRepository.java
 D:\认识实习GIT\backend\src\main\java\com\example\demo\dao\PlaceholderDao.java
+D:\认识实习GIT\backend\src\main\java\com\example\demo\controller\SearchController.java
 D:\认识实习GIT\backend\src\main\java\com\example\demo\config\CorsConfig.java
 D:\认识实习GIT\backend\src\main\java\com\example\demo\config\DataMigrationRunner.java
 D:\认识实习GIT\backend\src\main\java\com\example\demo\controller\VideoController.java

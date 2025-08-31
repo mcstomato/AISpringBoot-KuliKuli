@@ -108,6 +108,21 @@
             color: #999;
         }
         
+        .search-btn {
+            background: #FB7299;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-left: 8px;
+        }
+        
+        .search-btn:hover {
+            background: #e65a7f;
+        }
+        
         .user-actions {
             display: flex;
             align-items: center;
@@ -427,7 +442,8 @@
             
             <div class="search-box">
                 <i class="fas fa-search"></i>
-                <input type="text" placeholder="搜索视频、番剧、用户">
+                <input type="text" id="homeSearchInput" placeholder="搜索视频、番剧、用户">
+                <button class="search-btn" id="homeSearchBtn">搜索</button>
             </div>
             
             <div class="user-actions">
@@ -702,6 +718,26 @@
                 settingsBtn.addEventListener('click', function(e) {
                     e.preventDefault();
                     alert('设置页面功能开发中...');
+                });
+            }
+            
+            // 主页搜索功能
+            const homeSearchBtn = document.getElementById('homeSearchBtn');
+            const homeSearchInput = document.getElementById('homeSearchInput');
+            
+            if (homeSearchBtn && homeSearchInput) {
+                homeSearchBtn.addEventListener('click', function() {
+                    const keyword = homeSearchInput.value.trim();
+                    if (keyword) {
+                        // 在新页面中打开搜索页面
+                        window.open(`/search.html?q=${encodeURIComponent(keyword)}`, '_blank');
+                    }
+                });
+                
+                homeSearchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        homeSearchBtn.click();
+                    }
                 });
             }
         });

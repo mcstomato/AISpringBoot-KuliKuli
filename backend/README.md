@@ -75,10 +75,10 @@ backend/
 运行项目.bat
 ```
 
-### 使用Spring Shell交互式命令行（推荐）
+### 使用Spring Shell交互式命令行
 ```bash
 # 在backend目录运行
-test-shell.bat
+test-shell.bat (已删除)
 ```
 
 ### 使用PowerShell
@@ -93,7 +93,7 @@ cd backend
 & "D:\apache-maven-3.9.9\bin\mvn.cmd" spring-boot:run -DskipTests
 ```
 
-### 使用命令行
+### 使用命令行 (记得附带Maven地址)
 ```bash
 # 进入后端目录
 cd backend
@@ -105,10 +105,10 @@ mvn clean compile
 mvn spring-boot:run -DskipTests
 ```
 
-### 打包部署
+### 打包部署 
 ```bash
 # 打包为JAR文件
-mvn clean package -DskipTests
+"D:\apache-maven-3.9.9\bin\mvn.cmd" clean package -DskipTests
 
 # 运行JAR文件
 java -jar target/demo-0.0.1-SNAPSHOT.jar

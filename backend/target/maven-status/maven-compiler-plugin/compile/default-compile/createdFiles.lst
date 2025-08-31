@@ -14,6 +14,7 @@ com\example\demo\controller\WelcomeController.class
 com\example\demo\model\BannerMessage.class
 com\example\demo\shell\DatabaseCommands.class
 com\example\demo\controller\ImageProxyController.class
+com\example\demo\controller\SearchController.class
 com\example\demo\model\User.class
 com\example\demo\dao\BannerMessageRepository.class
 com\example\demo\shell\SystemCommands.class
