@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>赛事 - 酷哩酷哩 (゜-゜)つロ 干杯~-kilikili</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", "Segoe UI", sans-serif;
+        }
+        
+        body {
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        
+        /* 顶部导航栏 */
+        .header {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+        }
+        
+        .logo img {
+            height: 36px;
+        }
+        
+        .logo span {
+            color: #FB7299;
+            font-size: 20px;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+        
+        /* 音频波形样式 */
+        .audio-wave {
+            display: flex;
+            align-items: flex-end;
+            gap: 3px;
+            height: 36px;
+            margin-right: 5px;
+        }
+        
+        .wave-bar {
+            width: 4px;
+            background: #FB7299;
+            border-radius: 2px;
+            animation: waveAnimation 1.2s ease-in-out infinite;
+        }
+        
+        .wave-bar:nth-child(1) {
+            height: 20px;
+            animation-delay: 0.3s;
+        }
+        
+        .wave-bar:nth-child(2) {
+            height: 28px;
+            animation-delay: 0.5s;
+        }
+        
+        .wave-bar:nth-child(3) {
+            height: 16px;
+            animation-delay: 0.7s;
+        }
+        
+        .wave-bar:nth-child(4) {
+            height: 32px;
+            animation-delay: 0.9s;
+        }
+        
+        @keyframes waveAnimation {
+            0%, 100% {
+                transform: scaleY(1);
+                opacity: 0.8;
+            }
+            50% {
+                transform: scaleY(1.5);
+                opacity: 1;
+            }
+        }
+        
+        .main-nav {
+            display: flex;
+            flex: 1;
+        }
+        
+        .main-nav a {
+            padding: 8px 16px;
+            text-decoration: none;
+            color: #505050;
+            font-size: 14px;
+            position: relative;
+        }
+        
+        .main-nav a:hover {
+            color: #FB7299;
+        }
+        
+        .main-nav a.active {
+            color: #FB7299;
+        }
+        
+        .main-nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 6px solid #FB7299;
+        }
+        
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: #f4f4f4;
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin: 0 15px;
+            width: 300px;
+        }
+        
+        .search-box input {
+            border: none;
+            background: transparent;
+            outline: none;
+            width: 100%;
+            padding: 0 8px;
+        }
+        
+        .search-box i {
+            color: #999;
+        }
+        
+        .search-btn {
+            background: #FB7299;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-left: 8px;
+        }
+        
+        .search-btn:hover {
+            background: #e65a7f;
+        }
+        
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-actions a {
+            padding: 8px 12px;
+            text-decoration: none;
+            color: #505050;
+            font-size: 14px;
+        }
+        
+        .upload-btn {
+            background: #FB7299;
+            color: white !important;
+            border-radius: 8px;
+            padding: 8px 16px !important;
+            margin-left: 10px;
+        }
+
+        /* 登录后头像与昵称 */
+        .user-box { display: none; align-items: center; margin-left: 10px; }
+        .user-avatar { 
+            width: 36px; height: 36px; border-radius: 50%; background: #000 center/cover no-repeat; 
+            cursor: pointer; transition: all 0.3s ease; position: relative;
+        }
+        .user-avatar:hover { 
+            transform: scale(1.1); box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .user-nickname { font-size: 12px; color: #505050; margin-top: 4px; text-align: center; max-width: 80px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        /* 下拉菜单 */
+        .dropdown-menu { 
+            position: absolute; top: 100%; right: 0; margin-top: 8px; 
+            background: white; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); 
+            min-width: 120px; opacity: 0; visibility: hidden; transform: translateY(-10px); 
+            transition: all 0.3s ease; z-index: 1000;
+        }
+        .user-avatar:hover .dropdown-menu { 
+            opacity: 1; visibility: visible; transform: translateY(0);
+        }
+        .dropdown-menu::before { 
+            content: ''; position: absolute; top: -6px; right: 12px; 
+            width: 0; height: 0; border-left: 6px solid transparent; 
+            border-right: 6px solid transparent; border-bottom: 6px solid white;
+        }
+        .dropdown-menu a { 
+            display: block; padding: 10px 16px; color: #333; text-decoration: none; 
+            font-size: 13px; transition: background-color 0.2s;
+        }
+        .dropdown-menu a:hover { background-color: #f5f5f5; }
+        .dropdown-menu a:first-child { border-radius: 8px 8px 0 0; }
+        .dropdown-menu a:last-child { border-radius: 0 0 8px 8px; }
+        .dropdown-menu .divider { height: 1px; background: #eee; margin: 0; }
+        
+        /* 主要内容区 */
+        .main-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 12px;
+        }
+        
+        /* 功能未完善提示 */
+        .coming-soon {
+            text-align: center;
+            padding: 100px 20px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            margin: 40px 0;
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        .coming-soon-icon {
+            font-size: 80px;
+            color: #FB7299;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+        
+        .coming-soon h1 {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+        
+        .coming-soon p {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .coming-soon .features {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+        
+        .feature-item {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            min-width: 150px;
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-item i {
+            font-size: 32px;
+            color: #FB7299;
+            margin-bottom: 12px;
+        }
+        
+        .feature-item h3 {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .feature-item p {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .back-home {
+            display: inline-block;
+            background: #FB7299;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+        
+        .back-home:hover {
+            background: #e65a7f;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(251, 114, 153, 0.3);
+        }
+        
+        /* 动画 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+        
+        /* 底部 */
+        .footer {
+            background-color: #fff;
+            padding: 20px 0;
+            margin-top: 40px;
+            border-top: 1px solid #eee;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .footer-links {
+            margin-bottom: 15px;
+        }
+        
+        .footer-links a {
+            color: #666;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 14px;
+        }
+        
+        .footer-links a:hover {
+            color: #FB7299;
+        }
+        
+        .copyright {
+            color: #999;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">
+                <div class="audio-wave">
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                </div>
+                <span>酷哩酷哩</span>
+            </div>
+            
+            <nav class="main-nav">
+                <a href="index.html">首页</a>
+                <a href="anime.html">番剧</a>
+                <a href="live.html">直播</a>
+                <a href="game.html">游戏</a>
+                <a href="vip.html">会员购</a>
+                <a href="manga.html">漫画</a>
+                <a href="esports.html" class="active">赛事</a>
+            </nav>
+            
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="搜索赛事、用户">
+                <button class="search-btn">搜索</button>
+            </div>
+            
+            <div class="user-actions">
+                <a href="#">大会员</a>
+                <a href="#">消息</a>
+                <a href="#">动态</a>
+                <a href="#">收藏</a>
+                <a href="#">历史</a>
+                <a href="auth.html" class="upload-btn" id="loginEntry">未登录</a>
+                <div class="user-box" id="userBox">
+                    <div class="user-avatar" id="userAvatar">
+                        <div class="dropdown-menu">
+                            <a href="/profile.html" id="profileBtn"><i class="fas fa-user"></i> 个人主页</a>
+                            <a href="#" id="settingsBtn"><i class="fas fa-cog"></i> 设置页面</a>
+                            <div class="divider"></div>
+                            <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> 退出登录</a>
+                        </div>
+                    </div>
+                    <div class="user-nickname" id="userNickname"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要内容区 -->
+    <main class="main-container">
+        <div class="coming-soon">
+            <div class="coming-soon-icon">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <h1>赛事功能即将上线</h1>
+            <p>我们正在努力开发中，为您带来最激烈的电竞赛事体验</p>
+            
+            <div class="features">
+                <div class="feature-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <h3>赛事日历</h3>
+                    <p>实时赛事安排</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>实时数据</h3>
+                    <p>比赛数据统计</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-users"></i>
+                    <h3>战队信息</h3>
+                    <p>详细战队资料</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-coins"></i>
+                    <h3>竞猜系统</h3>
+                    <p>支持赛事竞猜</p>
+                </div>
+            </div>
+            
+            <a href="index.html" class="back-home">
+                <i class="fas fa-home"></i> 返回首页
+            </a>
+        </div>
+    </main>
+
+    <!-- 底部 -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#">关于我们</a>
+                <a href="#">联系方式</a>
+                <a href="#">用户协议</a>
+                <a href="#">隐私政策</a>
+                <a href="#">友情链接</a>
+                <a href="#">招聘信息</a>
+                <a href="#">侵权投诉</a>
+            </div>
+            <div class="copyright">
+                © 2023 kilikili为模仿页面. 仅供学习参考使用.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 检查用户登录状态
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const loginEntry = document.getElementById('loginEntry');
+            const userBox = document.getElementById('userBox');
+            const userAvatar = document.getElementById('userAvatar');
+            const userNickname = document.getElementById('userNickname');
+            
+            if (currentUser) {
+                loginEntry.style.display = 'none';
+                userBox.style.display = 'flex';
+                userAvatar.style.backgroundImage = `url(${currentUser.avatar_url || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHZpZXdCb3g9IjAgMCAzNiAzNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTgiIGN5PSIxOCIgcj0iMTgiIGZpbGw9IiM5OTkiLz4KPHN2Zz4K'})`;
+                userNickname.textContent = currentUser.nickname || '用户';
+            }
+            
+            // 退出登录
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                localStorage.removeItem('currentUser');
+                window.location.reload();
+            });
+        });
+    </script>
+</body>
+</html>

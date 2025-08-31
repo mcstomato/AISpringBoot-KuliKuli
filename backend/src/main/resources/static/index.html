@@ -41,15 +41,60 @@
             margin-right: 20px;
         }
         
-        .logo img {
-            height: 36px;
-        }
+
         
         .logo span {
             color: #FB7299;
             font-size: 20px;
             font-weight: bold;
             margin-left: 5px;
+        }
+        
+        /* 音频波形样式 */
+        .audio-wave {
+            display: flex;
+            align-items: flex-end;
+            gap: 3px;
+            height: 36px;
+            margin-right: 5px;
+        }
+        
+        .wave-bar {
+            width: 4px;
+            background: #FB7299;
+            border-radius: 2px;
+            animation: waveAnimation 1.2s ease-in-out infinite;
+        }
+        
+        .wave-bar:nth-child(1) {
+            height: 20px;
+            animation-delay: 0s;
+        }
+        
+        .wave-bar:nth-child(2) {
+            height: 28px;
+            animation-delay: 0.2s;
+        }
+        
+        .wave-bar:nth-child(3) {
+            height: 16px;
+            animation-delay: 0.4s;
+        }
+        
+        .wave-bar:nth-child(4) {
+            height: 32px;
+            animation-delay: 0.6s;
+        }
+        
+        @keyframes waveAnimation {
+            0%, 100% {
+                transform: scaleY(1);
+                opacity: 0.8;
+            }
+            50% {
+                transform: scaleY(1.5);
+                opacity: 1;
+            }
         }
         
         .main-nav {
@@ -84,6 +129,27 @@
             border-left: 6px solid transparent;
             border-right: 6px solid transparent;
             border-top: 6px solid #FB7299;
+            animation: slideIn 0.3s ease-out forwards;
+        }
+        
+        .main-nav a {
+            transition: all 0.3s ease;
+        }
+        
+        .main-nav a:hover {
+            color: #FB7299;
+            transform: translateY(-2px);
+        }
+        
+        @keyframes slideIn {
+            from {
+                width: 0;
+                opacity: 0;
+            }
+            to {
+                width: 12px;
+                opacity: 1;
+            }
         }
         
         .search-box {
@@ -426,18 +492,23 @@
     <header class="header">
         <div class="nav-container">
             <div class="logo">
-                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDI0IDMwMCI+PHBhdGggZmlsbD0iI0ZCNzI5OSIgZD0iTTE2MC44MiA3MC4wNGMtMjYuNjcgMC00OC4yIDIxLjUzLTQ4LjIgNDh2ODcuNTVjMCAyNi40NyAyMS41MyA0OCA0OCA0OCAyNi40NyAwIDQ4LTIxLjUzIDQ4LTQ4di04Ny41NWMwLTI2LjQ3LTIxLjUzLTQ4LTQ4LTQ4em0zNDUuMDQgMGMtMjYuNDcgMC00OCAyMS41My00OCA0OHY4Ny41NWMwIDI2LjQ3IDIxLjUzIDQ4IDQ4IDQ4czQ4LTIxLjUzIDQ4LTQ4di04Ny41NWMwLTI2LjQ3LTIxLjUzLTQ4LTQ4LTQ4em0tMTcyLjUyIDI0YzAtMjYuNDcgMjEuNTMtNDggNDgtNDggMjYuNDcgMCA0OCAyMS41MyA0OCA0OHYxNTUuNTNjMCAyNi40Ny0yMS41MyA0OC00OCA0OC0yNi40NyAwLTQ4LTIxLjUzLTQ4LTQ4Vjk0LjA0em0zNDUuMDQgMGMwLTI2LjQ3IDIxLjUzLTQ4IDQ4LTQ4czQ4IDIxLjUzIDQ4IDQ4djE1NS41M2MwIDI2LjQ3LTIxLjUzIDQ4LTQ4IDQ4cy00OC0yMS41My00OC00OFY5NC4wNHoiLz48L3N2Zz4=" alt="Bilibili">
+                <div class="audio-wave">
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                </div>
                 <span>酷哩酷哩</span>
             </div>
             
             <nav class="main-nav">
-                <a href="#" class="active">首页</a>
-                <a href="#">番剧</a>
-                <a href="#">直播</a>
-                <a href="#">游戏</a>
-                <a href="#">会员购</a>
-                <a href="#">漫画</a>
-                <a href="#">赛事</a>
+                <a href="index.html" class="active">首页</a>
+                <a href="anime.html">番剧</a>
+                <a href="live.html">直播</a>
+                <a href="game.html">游戏</a>
+                <a href="vip.html">会员购</a>
+                <a href="manga.html">漫画</a>
+                <a href="esports.html">赛事</a>
             </nav>
             
             <div class="search-box">
@@ -630,9 +701,17 @@
             const navLinks = document.querySelectorAll('.main-nav a');
             navLinks.forEach(link => {
                 link.addEventListener('click', (e) => {
-                    e.preventDefault();
+                    // 移除所有链接的active状态
                     navLinks.forEach(l => l.classList.remove('active'));
+                    // 为当前点击的链接添加active状态
                     link.classList.add('active');
+                    
+                    // 如果是首页链接，阻止默认行为并刷新当前页面
+                    if (link.href.includes('index.html')) {
+                        e.preventDefault();
+                        location.reload();
+                    }
+                    // 其他链接正常跳转，不阻止默认行为
                 });
             });
 
