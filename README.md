@@ -57,6 +57,7 @@
 | `原型远程访问url.txt`     | 作业：高保真原型访问链接| 
 | `运行项目.bat`     | 运行SpringBoot服务端(开发模式),需要编辑Maven地址| 
 | `mysql导出bilibili_videos.sql.bat` | 用于将mysql数据库进行导出sql，并将mysql的sql文件信息移植进H2数据库中|
+| `Apifox后置操作数据库代码.png` | 截图了具体操作的数据库代码|
 
 ### 📁 文件夹
 | 文件/文件夹名     | 说明                                                         |
