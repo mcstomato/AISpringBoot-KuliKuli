@@ -266,15 +266,34 @@
     </main>
 
     <script>
-        // 获取URL参数中的视频ID
-        function getVideoId() {
+        // 获取URL参数
+        function getUrlParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                videoId: params.get('videoId') || getVideoIdFromPath(),
+                bvid: params.get('bvid'),
+                source: params.get('source')
+            };
+        }
+        
+        // 从路径获取视频ID（兼容旧版本）
+        function getVideoIdFromPath() {
             const pathParts = window.location.pathname.split('/');
             return pathParts[pathParts.length - 1];
         }
         
         // 加载视频信息
         async function loadVideo() {
-            const videoId = getVideoId();
+            const params = getUrlParams();
+            
+            // 检查是否是Bilibili视频
+            if (params.source === 'bilibili' && params.bvid) {
+                await loadBilibiliVideo(params.bvid);
+                return;
+            }
+            
+            // 本地视频处理
+            const videoId = params.videoId;
             if (!videoId) {
                 showError();
                 return;
@@ -330,6 +349,53 @@
                 
             } catch (error) {
                 console.error('加载视频失败:', error);
+                showError();
+            }
+        }
+        
+        // 加载Bilibili视频
+        async function loadBilibiliVideo(bvid) {
+            try {
+                // 调用Bilibili API获取视频详情
+                const response = await fetch(`/api/bilibili/video/${bvid}`);
+                const data = await response.json();
+                
+                if (!data.success) {
+                    showError();
+                    return;
+                }
+                
+                const video = data.video;
+                
+                // 显示视频信息
+                document.getElementById('video-title').textContent = video.title || '未知标题';
+                document.getElementById('video-views').textContent = video.viewCount || '0';
+                document.getElementById('video-danmaku').textContent = video.danmakuCount || '0';
+                document.getElementById('video-duration').textContent = video.duration || '--:--';
+                document.getElementById('video-publish-time').textContent = video.publishTime ? new Date(video.publishTime * 1000).toLocaleDateString() : '未知时间';
+                document.getElementById('up-name').textContent = video.upName || '未知UP主';
+                
+                // 设置UP主头像
+                const upAvatar = document.getElementById('up-avatar');
+                if (video.upAvatar) {
+                    upAvatar.src = `/proxy/image?url=${encodeURIComponent(video.upAvatar)}`;
+                } else {
+                    upAvatar.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjUiIGN5PSIyNSIgcj0iMjUiIGZpbGw9IiNkZGQiLz4KPHN2Zz4=';
+                }
+                
+                // 设置视频播放器 - 使用Bilibili嵌入播放器
+                const videoIframe = document.getElementById('video-iframe');
+                videoIframe.src = `https://player.bilibili.com/player.html?bvid=${bvid}&autoplay=1`;
+                
+                // 隐藏加载状态，显示视频
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('video-container').style.display = 'block';
+                
+                // 更新页面标题
+                document.title = `${video.title} - 酷哩酷哩`;
+                
+            } catch (error) {
+                console.error('加载Bilibili视频失败:', error);
                 showError();
             }
         }

@@ -49,7 +49,7 @@ public class VideoController {
     public List<Map<String, Object>> randomVideos(HttpServletRequest request) {
         logAccessIP(request, "/api/videos/random");
         try {
-            List<BilibiliVideo> list = repository.findRandomEight();
+            List<BilibiliVideo> list = repository.findRandomThirtyTwo();
             return list.stream().map(v -> {
                 Map<String, Object> m = new HashMap<>();
                 m.put("id", v.getId());

@@ -10,6 +10,9 @@ public interface BilibiliVideoRepository extends JpaRepository<BilibiliVideo, In
     @Query(value = "SELECT * FROM bilibili_videos ORDER BY RANDOM() LIMIT 8", nativeQuery = true)
     List<BilibiliVideo> findRandomEight();
     
+    @Query(value = "SELECT * FROM bilibili_videos ORDER BY RANDOM() LIMIT 32", nativeQuery = true)
+    List<BilibiliVideo> findRandomThirtyTwo();
+    
     // 搜索视频标题或UP主名称
     List<BilibiliVideo> findByTitleContainingIgnoreCaseOrUpNameContainingIgnoreCase(String title, String upName);
 }

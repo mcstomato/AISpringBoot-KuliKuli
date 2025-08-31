@@ -563,13 +563,55 @@
         
         <div class="video-grid" id="grid-recommend"></div>
         
-        <!-- 动画区 -->
+
+        
+        <!-- 音乐区 -->
         <div class="section-title">
-            <h2>动画区</h2>
+            <h2>音乐区</h2>
             <a href="#">查看更多 <i class="fas fa-chevron-right"></i></a>
         </div>
         
-        <div class="video-grid" id="grid-anime"></div>
+        <div class="video-grid" id="grid-music"></div>
+        
+        <!-- 舞蹈区 -->
+        <div class="section-title">
+            <h2>舞蹈区</h2>
+            <a href="#">查看更多 <i class="fas fa-chevron-right"></i></a>
+        </div>
+        
+        <div class="video-grid" id="grid-dance"></div>
+        
+        <!-- 游戏区 -->
+        <div class="section-title">
+            <h2>游戏区</h2>
+            <a href="#">查看更多 <i class="fas fa-chevron-right"></i></a>
+        </div>
+        
+        <div class="video-grid" id="grid-game"></div>
+        
+        <!-- 科技区 -->
+        <div class="section-title">
+            <h2>科技区</h2>
+            <a href="#">查看更多 <i class="fas fa-chevron-right"></i></a>
+        </div>
+        
+        <div class="video-grid" id="grid-tech"></div>
+        
+        <!-- 生活区 -->
+        <div class="section-title">
+            <h2>生活区</h2>
+            <a href="#">查看更多 <i class="fas fa-chevron-right"></i></a>
+        </div>
+        
+        <div class="video-grid" id="grid-life"></div>
+        
+        <!-- 鬼畜区 -->
+        <div class="section-title">
+            <h2>鬼畜区</h2>
+            <a href="#">查看更多 <i class="fas fa-chevron-right"></i></a>
+        </div>
+        
+        <div class="video-grid" id="grid-kichiku"></div>
     </main>
 
     <!-- 底部 -->
@@ -631,7 +673,12 @@
             }
             // 初始先渲染占位各4张
             renderPlaceholdersTo('grid-recommend', 4);
-            renderPlaceholdersTo('grid-anime', 4);
+            renderPlaceholdersTo('grid-music', 4);
+            renderPlaceholdersTo('grid-dance', 4);
+            renderPlaceholdersTo('grid-game', 4);
+            renderPlaceholdersTo('grid-tech', 4);
+            renderPlaceholdersTo('grid-life', 4);
+            renderPlaceholdersTo('grid-kichiku', 4);
 
             function renderCard(v){
                 return `
@@ -653,47 +700,132 @@
                     </div>
                 </div>`;
             }
-            fetch('/api/videos/random').then(r=>r.json()).then(list=>{
-                if(!Array.isArray(list) || list.length === 0){ return; }
-                const a = list.slice(0,4);
-                const b = list.slice(4,8);
-                const grid1 = document.getElementById('grid-recommend');
-                const grid2 = document.getElementById('grid-anime');
-                if(grid1 && a.length){ grid1.innerHTML = a.map(renderCard).join(''); }
-                if(grid2 && b.length){ grid2.innerHTML = b.map(renderCard).join(''); }
-                // 绑定悬停效果到新卡片
+            
+            // 渲染Bilibili API视频卡片
+            function renderBilibiliCard(video){
+                return `
+                <div class="video-card" data-bvid="${video.bvid || ''}" onclick="playBilibiliVideo('${video.bvid || ''}')">
+                    <div class="video-thumb">
+                        <img src="/proxy/image?url=${encodeURIComponent(video.pic || '')}" alt="cover"/>
+                        <div class="video-duration">${video.duration || ''}</div>
+                    </div>
+                    <div class="video-info">
+                        <div class="video-title">${video.title || ''}</div>
+                        <div class="video-stats">
+                            <span><i class="fas fa-play"></i> ${video.play || ''}</span>
+                            <span><i class="fas fa-comment"></i> ${video.video_review || ''}</span>
+                        </div>
+                        <div class="video-up">
+                            <img src="/proxy/image?url=${encodeURIComponent(video.upic || '')}" alt="up"/>
+                            <span>${video.author || ''}</span>
+                        </div>
+                    </div>
+                </div>`;
+            }
+            // 定义分区配置并加载数据
+            (function() {
+                const sections = [
+                    { id: 'grid-recommend', name: '推荐', api: '/api/bilibili/recommend' },
+                    { id: 'grid-music', name: '音乐', api: '/api/bilibili/channel/3' },
+                    { id: 'grid-dance', name: '舞蹈', api: '/api/bilibili/channel/129' },
+                    { id: 'grid-game', name: '游戏', api: '/api/bilibili/channel/4' },
+                    { id: 'grid-tech', name: '科技', api: '/api/bilibili/channel/36' },
+                    { id: 'grid-life', name: '生活', api: '/api/bilibili/channel/160' },
+                    { id: 'grid-kichiku', name: '鬼畜', api: '/api/bilibili/channel/119' }
+                ];
+                
+                // 为每个分区加载数据
+                sections.forEach(section => {
+                    loadSectionVideos(section);
+                });
+                
+                // 加载分区视频的函数
+                function loadSectionVideos(section) {
+                    console.log(`开始加载${section.name}分区:`, section.api);
+                    fetch(section.api)
+                        .then(r => {
+                            console.log(`${section.name}分区响应状态:`, r.status);
+                            return r.json();
+                        })
+                        .then(data => {
+                            console.log(`${section.name}分区数据:`, data);
+                            if (data.success && Array.isArray(data.videos) && data.videos.length > 0) {
+                                const grid = document.getElementById(section.id);
+                                if (grid) {
+                                    // 随机选择4个视频，确保每次刷新都不同
+                                    const shuffledVideos = [...data.videos].sort(() => Math.random() - 0.5);
+                                    const selectedVideos = shuffledVideos.slice(0, 4);
+                                    grid.innerHTML = selectedVideos.map(renderBilibiliCard).join('');
+                                    console.log(`${section.name}分区加载成功，随机显示${selectedVideos.length}个视频`);
+                                }
+                            } else {
+                                console.log(`${section.name}分区数据无效，使用备用方案`);
+                                loadLocalFallback(section.id);
+                            }
+                        })
+                        .catch(error => {
+                            console.error(`加载${section.name}分区失败:`, error);
+                            // 失败时使用本地数据作为备用
+                            loadLocalFallback(section.id);
+                            });
+                }
+                
+                // 备用本地数据加载
+                function loadLocalFallback(gridId) {
+                    console.log(`开始加载备用数据:`, gridId);
+                    fetch('/api/videos/random')
+                        .then(r => {
+                            console.log(`备用数据响应状态:`, r.status);
+                            return r.json();
+                        })
+                        .then(list => {
+                            console.log(`备用数据:`, list);
+                            if (Array.isArray(list) && list.length >= 4) {
+                                const grid = document.getElementById(gridId);
+                                if (grid) {
+                                    grid.innerHTML = list.slice(0, 4).map(renderCard).join('');
+                                    console.log(`${gridId}备用数据加载成功`);
+                                }
+                            } else {
+                                console.log(`${gridId}备用数据无效或不足`);
+                            }
+                        })
+                        .catch(error => {
+                            console.error(`${gridId}备用数据加载失败:`, error);
+                        });
+                }
+            })();
+            
+            // 视频卡片悬停效果
+            function addHoverEffects() {
                 const videoCards = document.querySelectorAll('.video-card');
                 videoCards.forEach(card => {
                     card.addEventListener('mouseenter', () => {
                         card.style.transform = 'translateY(-5px)';
                         card.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.1)';
                     });
+                    
                     card.addEventListener('mouseleave', () => {
                         card.style.transform = 'translateY(0)';
                         card.style.boxShadow = 'none';
                     });
                 });
-            }).catch(()=>{
-                // 失败则保留占位卡片
-            });
-            // 视频卡片悬停效果
-            const videoCards = document.querySelectorAll('.video-card');
-            videoCards.forEach(card => {
-                card.addEventListener('mouseenter', () => {
-                    card.style.transform = 'translateY(-5px)';
-                    card.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.1)';
-                });
-                
-                card.addEventListener('mouseleave', () => {
-                    card.style.transform = 'translateY(0)';
-                    card.style.boxShadow = 'none';
-                });
-            });
+            }
+            
+            // 延迟添加悬停效果，确保卡片已加载
+            setTimeout(addHoverEffects, 1000);
             
             // 播放视频函数
             window.playVideo = function(videoId) {
                 if (videoId && videoId > 0) {
                     window.location.href = `/play/${videoId}`;
+                }
+            };
+            
+            // 播放Bilibili视频函数
+            window.playBilibiliVideo = function(bvid) {
+                if (bvid) {
+                    window.location.href = `/play.html?bvid=${bvid}&source=bilibili`;
                 }
             };
             
