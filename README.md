@@ -83,7 +83,9 @@
 ├── 📁 backend/
 │   ├── 📁 data/
 │   │   ├── 📄 demo.mv.db
-│   │   └── 📄 demo.trace.db
+│   │   ├── 📄 demo.trace.db
+│   │   ├── 📄 demo_db.mv.db
+│   │   └── 📄 demo_db.trace.db
 │   │
 │   ├── 📁 src/
 │   │   └── 📁 main/
@@ -91,36 +93,61 @@
 │   │       │   └── 📁 com/
 │   │       │       └── 📁 example/
 │   │       │           └── 📁 demo/
+│   │       │               ├── 📁 command/
+
 │   │       │               ├── 📁 config/
 │   │       │               │   ├── 📄 CorsConfig.java
-│   │       │               │   └── 📄 DataMigrationRunner.java
+│   │       │               │   ├── 📄 DataMigrationRunner.java
+│   │       │               │   ├── 📄 RestTemplateConfig.java
+│   │       │               │   └── 📄 ShellConfig.java
 │   │       │               │
 │   │       │               ├── 📁 controller/
 │   │       │               │   ├── 📄 BannerController.java
+│   │       │               │   ├── 📄 BilibiliApiController.java
 │   │       │               │   ├── 📄 ImageProxyController.java
+│   │       │               │   ├── 📄 SearchController.java
+│   │       │               │   ├── 📄 UserController.java
 │   │       │               │   ├── 📄 VideoController.java
 │   │       │               │   └── 📄 WelcomeController.java
 │   │       │               │
 │   │       │               ├── 📁 dao/
 │   │       │               │   ├── 📄 BannerMessageRepository.java
 │   │       │               │   ├── 📄 BilibiliVideoRepository.java
-│   │       │               │   └── 📄 PlaceholderDao.java
+│   │       │               │   ├── 📄 PlaceholderDao.java
+│   │       │               │   └── 📄 UserRepository.java
 │   │       │               │
 │   │       │               ├── 📁 model/
 │   │       │               │   ├── 📄 BannerMessage.java
-│   │       │               │   └── 📄 BilibiliVideo.java
+│   │       │               │   ├── 📄 BilibiliVideo.java
+│   │       │               │   └── 📄 User.java
 │   │       │               │
 │   │       │               ├── 📁 service/
 │   │       │               │   └── 📄 WelcomeService.java
+│   │       │               │
+│   │       │               ├── 📁 shell/
+│   │       │               │   ├── 📄 DatabaseCommands.java
+│   │       │               │   ├── 📄 SystemCommands.java
+│   │       │               │   ├── 📄 UserCommands.java
+│   │       │               │   └── 📄 VideoCommands.java
 │   │       │               │
 │   │       │               └── 📄 Application.java
 │   │       │
 │   │       └── 📁 resources/
 │   │           ├── 📁 static/
+│   │           │   ├── 🌐 anime.html
+│   │           │   ├── 🌐 auth.html
+│   │           │   ├── 🌐 esports.html
+│   │           │   ├── 🌐 game.html
 │   │           │   ├── 🌐 index.html
+│   │           │   ├── 🌐 live.html
+│   │           │   ├── 🌐 manga.html
+│   │           │   ├── 🌐 more.html
 │   │           │   ├── 🌐 play.html
+│   │           │   ├── 🌐 profile.html
+│   │           │   ├── 🌐 search.html
 │   │           │   ├── 🌐 test.html
-│   │           │   └── 🌐 video.html
+│   │           │   ├── 🌐 video.html
+│   │           │   └── 🌐 vip.html
 │   │           │
 │   │           ├── 📄 application.properties
 │   │           ├── 📄 bilibili_videos.sql
@@ -134,33 +161,56 @@
 │   │   │   │       └── 📁 demo/
 │   │   │   │           ├── 📁 config/
 │   │   │   │           │   ├── 📄 CorsConfig.class
-│   │   │   │           │   └── 📄 DataMigrationRunner.class
+│   │   │   │           │   ├── 📄 DataMigrationRunner.class
+│   │   │   │           │   ├── 📄 RestTemplateConfig.class
+│   │   │   │           │   └── 📄 ShellConfig.class
 │   │   │   │           │
 │   │   │   │           ├── 📁 controller/
 │   │   │   │           │   ├── 📄 BannerController.class
+│   │   │   │           │   ├── 📄 BilibiliApiController.class
 │   │   │   │           │   ├── 📄 ImageProxyController.class
+│   │   │   │           │   ├── 📄 SearchController.class
+│   │   │   │           │   ├── 📄 UserController.class
 │   │   │   │           │   ├── 📄 VideoController.class
 │   │   │   │           │   └── 📄 WelcomeController.class
 │   │   │   │           │
 │   │   │   │           ├── 📁 dao/
 │   │   │   │           │   ├── 📄 BannerMessageRepository.class
 │   │   │   │           │   ├── 📄 BilibiliVideoRepository.class
-│   │   │   │           │   └── 📄 PlaceholderDao.class
+│   │   │   │           │   ├── 📄 PlaceholderDao.class
+│   │   │   │           │   └── 📄 UserRepository.class
 │   │   │   │           │
 │   │   │   │           ├── 📁 model/
 │   │   │   │           │   ├── 📄 BannerMessage.class
-│   │   │   │           │   └── 📄 BilibiliVideo.class
+│   │   │   │           │   ├── 📄 BilibiliVideo.class
+│   │   │   │           │   └── 📄 User.class
 │   │   │   │           │
 │   │   │   │           ├── 📁 service/
 │   │   │   │           │   └── 📄 WelcomeService.class
 │   │   │   │           │
+│   │   │   │           ├── 📁 shell/
+│   │   │   │           │   ├── 📄 DatabaseCommands.class
+│   │   │   │           │   ├── 📄 SystemCommands.class
+│   │   │   │           │   ├── 📄 UserCommands.class
+│   │   │   │           │   └── 📄 VideoCommands.class
+│   │   │   │           │
 │   │   │   │           └── 📄 Application.class
 │   │   │   │
 │   │   │   ├── 📁 static/
+│   │   │   │   ├── 🌐 anime.html
+│   │   │   │   ├── 🌐 auth.html
+│   │   │   │   ├── 🌐 esports.html
+│   │   │   │   ├── 🌐 game.html
 │   │   │   │   ├── 🌐 index.html
+│   │   │   │   ├── 🌐 live.html
+│   │   │   │   ├── 🌐 manga.html
+│   │   │   │   ├── 🌐 more.html
 │   │   │   │   ├── 🌐 play.html
+│   │   │   │   ├── 🌐 profile.html
+│   │   │   │   ├── 🌐 search.html
 │   │   │   │   ├── 🌐 test.html
-│   │   │   │   └── 🌐 video.html
+│   │   │   │   ├── 🌐 video.html
+│   │   │   │   └── 🌐 vip.html
 │   │   │   │
 │   │   │   ├── 📄 application.properties
 │   │   │   ├── 📄 bilibili_videos.sql
@@ -179,11 +229,17 @@
 │   │                   └── 📄 inputFiles.lst
 │   │
 │   ├── 📄 README.md
+│   ├── 📝 test-commands.txt
+│   ├── 📄 一键运行.bat
+│   ├── 📄 spring-shell.log
 │   └── 📄 pom.xml
 │
 ├── 📁 frontend/
+│   ├── 🌐 auth.html
 │   ├── 🌐 index.html
 │   ├── 🌐 play.html
+│   ├── 🌐 profile.html
+│   ├── 🌐 search.html
 │   ├── 🌐 test.html
 │   ├── 🌐 video.html
 │   └── 📋 package.json
@@ -217,6 +273,7 @@
 ├── 📝 原型远程访问url.txt
 ├── 📄 mysql导出bilibili_videos.sql.bat
 ├── 📄 运行项目.bat
+├── 🖼️ Apifox后置操作数据库代码.png
 ├── 🐍 generate_directory_tree.py
 ├── 🐍 Get_video_information_hot.py
 ├── 🐍 Get_video_information_ranking.py
