@@ -28,59 +28,96 @@ This is a personal learning project, not an official product of Bilibili. All da
 
 ## 项目结构
 ```
-backend/
-├── src/
-│   └── main/
-│       ├── java/com/example/demo/
-│       │   ├── Application.java          # 主启动类
-│       │   ├── controller/               # 控制器层
-│       │   │   ├── UserController.java   # 用户管理控制器
-│       │   │   ├── VideoController.java  # 视频管理控制器
-│       │   │   ├── BannerController.java # Banner管理控制器
-│       │   │   ├── ImageProxyController.java # 图片代理控制器
-│       │   │   ├── SearchController.java # 搜索功能控制器
-│       │   │   ├── WelcomeController.java # 欢迎页面控制器
-│       │   │   └── BilibiliApiController.java # B站API代理控制器
-│       │   ├── service/                  # 服务层
-│       │   │   └── WelcomeService.java   # 欢迎页面服务
-│       │   ├── dao/                      # 数据访问层
-│       │   │   ├── UserRepository.java   # 用户数据访问
-│       │   │   ├── BilibiliVideoRepository.java # 视频数据访问
-│       │   │   ├── BannerMessageRepository.java # Banner数据访问
-│       │   │   └── PlaceholderDao.java   # 占位符数据访问
-│       │   ├── model/                    # 实体类
-│       │   │   ├── User.java             # 用户实体
-│       │   │   ├── BilibiliVideo.java    # 视频实体
-│       │   │   └── BannerMessage.java    # Banner实体
-│       │   ├── config/                   # 配置类
-│       │   │   ├── CorsConfig.java       # 跨域配置
-│       │   │   ├── DataMigrationRunner.java # 数据迁移配置
-│       │   │   ├── ShellConfig.java      # Spring Shell配置
-│       │   │   └── RestTemplateConfig.java # RestTemplate配置
-│       │   └── shell/                    # Shell命令类
-│       │       ├── UserCommands.java     # 用户管理命令
-│       │       ├── VideoCommands.java    # 视频管理命令
-│       │       ├── DatabaseCommands.java # 数据库操作命令
-│       │       └── SystemCommands.java   # 系统管理命令
-│       └── resources/
-│           ├── application.properties    # 应用配置
-│           ├── schema.sql               # 数据库结构
-│           ├── data.sql                 # 初始数据
-│           ├── bilibili_videos.sql      # B站视频数据
-│           └── static/                  # 静态资源
-│               ├── index.html           # 主页
-│               ├── auth.html            # 登录注册页
-│               ├── profile.html         # 个人主页
-│               ├── video.html           # 视频播放页
-│               ├── play.html            # 播放器页面
-│               ├── search.html          # 搜索页面
-│               └── test.html            # 测试页面
-├── data/                                # H2数据库文件
-│   ├── demo_db.mv.db                    # 主数据库文件
-│   └── demo_db.trace.db                 # 数据库日志文件
-├── pom.xml                              # Maven配置
-├── test-shell.bat                       # Spring Shell测试脚本
-└── README.md                            # 项目说明
+项目根目录/
+├── backend/                             # 后端项目目录
+│   ├── src/
+│   │   └── main/
+│   │       ├── java/com/example/demo/
+│   │       │   ├── Application.java          # 主启动类
+│   │       │   ├── controller/               # 控制器层
+│   │       │   │   ├── UserController.java   # 用户管理控制器
+│   │       │   │   ├── VideoController.java  # 视频管理控制器
+│   │       │   │   ├── BannerController.java # Banner管理控制器
+│   │       │   │   ├── ImageProxyController.java # 图片代理控制器
+│   │       │   │   ├── SearchController.java # 搜索功能控制器
+│   │       │   │   ├── WelcomeController.java # 欢迎页面控制器
+│   │       │   │   └── BilibiliApiController.java # B站API代理控制器
+│   │       │   ├── service/                  # 服务层
+│   │       │   │   └── WelcomeService.java   # 欢迎页面服务
+│   │       │   ├── dao/                      # 数据访问层
+│   │       │   │   ├── UserRepository.java   # 用户数据访问
+│   │       │   │   ├── BilibiliVideoRepository.java # 视频数据访问
+│   │       │   │   ├── BannerMessageRepository.java # Banner数据访问
+│   │       │   │   └── PlaceholderDao.java   # 占位符数据访问
+│   │       │   ├── model/                    # 实体类
+│   │       │   │   ├── User.java             # 用户实体
+│   │       │   │   ├── BilibiliVideo.java    # 视频实体
+│   │       │   │   └── BannerMessage.java    # Banner实体
+│   │       │   ├── config/                   # 配置类
+│   │       │   │   ├── CorsConfig.java       # 跨域配置
+│   │       │   │   ├── DataMigrationRunner.java # 数据迁移配置
+│   │       │   │   ├── ShellConfig.java      # Spring Shell配置
+│   │       │   │   └── RestTemplateConfig.java # RestTemplate配置
+│   │       │   └── shell/                    # Shell命令类
+│   │       │       ├── UserCommands.java     # 用户管理命令
+│   │       │       ├── VideoCommands.java    # 视频管理命令
+│   │       │       ├── DatabaseCommands.java # 数据库操作命令
+│   │       │       └── SystemCommands.java   # 系统管理命令
+│   │       └── resources/
+│   │           ├── application.properties    # 应用配置
+│   │           ├── schema.sql               # 数据库结构
+│   │           ├── data.sql                 # 初始数据
+│   │           ├── bilibili_videos.sql      # B站视频数据
+│   │           └── static/                  # 静态资源
+│   │               ├── index.html           # 主页（多分区视频展示）
+│   │               ├── auth.html            # 登录注册页
+│   │               ├── profile.html         # 个人主页
+│   │               ├── video.html           # 视频播放页
+│   │               ├── play.html            # 播放器页面（支持B站视频）
+│   │               ├── search.html          # 搜索页面（B站API集成）
+│   │               ├── more.html            # 查看更多页面（统一页面）
+│   │               ├── anime.html           # 番剧页面
+│   │               ├── live.html            # 直播页面
+│   │               ├── game.html            # 游戏页面
+│   │               ├── vip.html             # 会员购页面
+│   │               ├── manga.html           # 漫画页面
+│   │               ├── esports.html         # 赛事页面
+│   │               └── test.html            # 测试页面
+│   ├── data/                                # H2数据库文件
+│   │   ├── demo.mv.db                       # 主数据库文件
+│   │   └── demo.trace.db                    # 数据库日志文件
+│   ├── pom.xml                              # Maven配置
+│   └── README.md                            # 项目说明
+├── frontend/                               # 前端项目目录
+│   ├── index.html                          # 主页（与后端同步）
+│   ├── auth.html                           # 登录注册页
+│   ├── profile.html                        # 个人主页
+│   ├── video.html                          # 视频播放页
+│   ├── play.html                           # 播放器页面
+│   ├── search.html                         # 搜索页面
+│   ├── more.html                           # 查看更多页面
+│   ├── anime.html                          # 番剧页面
+│   ├── live.html                           # 直播页面
+│   ├── game.html                           # 游戏页面
+│   ├── vip.html                            # 会员购页面
+│   ├── manga.html                          # 漫画页面
+│   ├── esports.html                        # 赛事页面
+│   ├── test.html                           # 测试页面
+│   └── package.json                        # 前端项目配置
+├── HTML/                                   # HTML演示文件
+├── HTML演示图片/                           # 演示截图
+├── HTML源码截图/                           # 源码截图
+├── 运行项目.bat                            # 一键启动脚本
+├── migrate_bilibili_to_schema.py          # 数据迁移脚本
+├── Get_video_information_hot.py           # 热门视频获取脚本
+├── Get_video_information_ranking.py       # 排行榜视频获取脚本
+├── generate_directory_tree.py             # 目录树生成脚本
+├── mysql导出bilibili_videos.sql.bat       # 数据库导出脚本
+├── apifox访问url.txt                      # API文档访问地址
+├── 原型远程访问url.txt                    # 原型访问地址
+├── 导出接口文档.html                       # 接口文档
+├── 产品战略文档.docx                       # 产品文档
+└── README.md                              # 项目总说明
 ```
 
 ## 环境要求
