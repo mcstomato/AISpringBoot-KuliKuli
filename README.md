@@ -2,19 +2,8 @@
 # 🔗 主页地址：60.205.198.37:80
 # 🔗 什么？ 你问我一个贫困大学生服务器是哪来的？
 
-<details>
-<summary>点击查看被隐藏的内容</summary>
-
-这里是被隐藏的文本内容，只有在点击上方标题后才会显示出来。
-
-```javascript
-// 甚至可以隐藏代码示例
-function example() {
-  console.log("这是被隐藏的代码");
-}
-```
-
-</details>
+<span style="background-color: black; color: black; cursor: pointer;" onmouseover="this.style.color='white'" onmouseout="this.style.color='black'">
+这段文字在鼠标悬停时会显示出来，但效果可能因GitHub的安全策略而受限。
 
 
 ## ⚡ 放在最前面的提示
