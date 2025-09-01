@@ -7,7 +7,7 @@
 该项目已成功部署至服务器，后续更新会不定时上传至服务器
 
 该项目完整的已完成功能在该页的末尾
-
+ 
 ## 项目简介
 这是一个基于Spring Boot的视频平台后端项目，集成了用户管理、视频播放搜索等功能。使用H2文件数据库进行数据持久化存储。
 
@@ -104,12 +104,19 @@ This is a personal learning project, not an official product of Bilibili. All da
 │   ├── esports.html                        # 赛事页面
 │   ├── test.html                           # 测试页面
 │   └── package.json                        # 前端项目配置
+├── HTML/                                   # HTML演示文件
+├── HTML演示图片/                           # 演示截图
+├── HTML源码截图/                           # 源码截图
 ├── 运行项目.bat                            # 一键启动脚本
 ├── migrate_bilibili_to_schema.py          # 数据迁移脚本
 ├── Get_video_information_hot.py           # 热门视频获取脚本
 ├── Get_video_information_ranking.py       # 排行榜视频获取脚本
 ├── generate_directory_tree.py             # 目录树生成脚本
 ├── mysql导出bilibili_videos.sql.bat       # 数据库导出脚本
+├── apifox访问url.txt                      # API文档访问地址
+├── 原型远程访问url.txt                    # 原型访问地址
+├── 导出接口文档.html                       # 接口文档
+├── 产品战略文档.docx                       # 产品文档
 └── README.md                              # 项目总说明
 ```
 

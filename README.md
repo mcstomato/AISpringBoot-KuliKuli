@@ -31,6 +31,7 @@
 
 搞得我已经忘了该项目哪些地方用了绝对路径....
 
+
 ## 🎯 高保真原型设计分工
 
 | 模块 | 负责人 | 进度 |
@@ -56,8 +57,16 @@
 | `Get_video_information_ranking.py`     | bilibili视频信息获取程序，保存至mysql，需要请按代码内容创建数据表 |
 | `generate_directory_tree.py`   | 用于根据文件内容生成树状文件结构目录                           |
 | `migrate_bilibili_to_schema.py`| 用于将mysql导出的sql文件内容移植到H2可用的sql文件中(schema.sql) |
+| `产品战略文档.docx`     | 作业：BRD MRD PRD | 
+| `导出接口文档.html`     | 作业：apifox软件项目导出内容| 
+| `apifox访问url.txt`     | 作业：项目分享至mock的链接| 
+| `原型远程访问url.txt`     | 作业：高保真原型访问链接| 
 | `运行项目.bat`     | 运行SpringBoot服务端(开发模式),需要编辑Maven地址| 
 | `mysql导出bilibili_videos.sql.bat` | 用于将mysql数据库进行导出sql，并将mysql的sql文件信息移植进H2数据库中|
+| `导出数据库：bilibili_videos.sql` | mysql导出视频数据|
+| `导出数据库：data.sql` | 测试用户初始化以及横幅显示信息数据库|
+| `导出数据库：schema.sql` | mysql转成H2数据库（目前视频数据来源已完全替换为更完美的API直接获取，数据库作为备用方案）|
+| `Apifox后置操作数据库代码.png` | 截图了具体操作的数据库代码|
 
 
 ### 📁 文件夹
@@ -65,6 +74,9 @@
 |------------------|--------------------------------------------------------------|
 | `backend`   | 作业：SpringBoot架构的项目，包含了作业内容：显示学号姓名班级等 该文件是项目后端内容|
 | `frontend`   | 作业：SpringBoot架构的项目，包含了作业内容：显示学号姓名班级等 该文件是前端静态网页内容|
+| `HTML源码截图`    | 作业：用来练手的示例的HTML源码截图                           |
+| `HTML演示图片`    | 作业：用来练手的示例的HTML效果截图                           |
+| `HTML`           | 作业：HTML编辑教学时用于练手的示例                           |
 
 
 ## 📁 项目文件结构
@@ -245,11 +257,40 @@
 │   ├── 🌐 vip.html
 │   └── 📋 package.json
 │
+├── 📁 HTML/
+│   ├── 🌐 QingPingLe.html
+│   ├── 🌐 RenWuJianJie.html
+│   ├── 🌐 WangLuShan.html
+│   ├── 🌐 wqp.html
+│   ├── 🌐 wqpjj.html
+│   └── 🖼️ wqp.jpg
+│
+├── 📁 HTML源码截图/
+│   ├── 🖼️ 人物简介.png
+│   ├── 🖼️ 吴某_对应核桃主页.png
+│   ├── 🖼️ 吴某简介_对应核桃简介页.png
+│   ├── 🖼️ 望庐山瀑布.png
+│   └── 🖼️ 清平乐·年年雪里.png
+│
+├── 📁 HTML演示图片/
+│   ├── 🖼️ 人物简介.png
+│   ├── 🖼️ 吴某_对应核桃主页.png
+│   ├── 🖼️ 吴某简介_对应核桃简介页.png
+│   ├── 🖼️ 望庐山瀑布.png
+│   └── 🖼️ 清平乐·年年雪里.png
+│
+├── 📄 产品战略文档.docx
+├── 🌐 导出接口文档.html
 ├── 📄 README.md
-├── 📄 LICENSE
+├── 📝 apifox访问url.txt
+├── 📝 原型远程访问url.txt
 ├── 📄 mysql导出bilibili_videos.sql.bat
 ├── 📄 运行项目.bat
+├── 🖼️ Apifox后置操作数据库代码.png
 ├── 🐍 generate_directory_tree.py
 ├── 🐍 Get_video_information_hot.py
 ├── 🐍 Get_video_information_ranking.py
-└── 🐍 migrate_bilibili_to_schema.py
+├── 🐍 migrate_bilibili_to_schema.py
+├── 📄 导出数据库：bilibili_videos.sql
+├── 📄 导出数据库：data.sql
+└── 📄 导出数据库：schema.sql
