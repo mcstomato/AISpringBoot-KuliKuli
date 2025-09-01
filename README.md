@@ -66,7 +66,11 @@
 | `原型远程访问url.txt`     | 作业：高保真原型访问链接| 
 | `运行项目.bat`     | 运行SpringBoot服务端(开发模式),需要编辑Maven地址| 
 | `mysql导出bilibili_videos.sql.bat` | 用于将mysql数据库进行导出sql，并将mysql的sql文件信息移植进H2数据库中|
+| `导出数据库：bilibili_videos.sql` | mysql导出视频数据|
+| `导出数据库：data.sql` | 测试用户初始化以及横幅显示信息数据库|
+| `导出数据库：schema.sql` | mysql转成H2数据库（目前视频数据来源已完全替换为更完美的API直接获取，数据库作为备用方案）|
 | `Apifox后置操作数据库代码.png` | 截图了具体操作的数据库代码|
+
 
 ### 📁 文件夹
 | 文件/文件夹名     | 说明                                                         |
@@ -221,12 +225,17 @@
 │   │   │   └── 📁 annotations/
 
 │   │   │
-│   │   └── 📁 maven-status/
-│   │       └── 📁 maven-compiler-plugin/
-│   │           └── 📁 compile/
-│   │               └── 📁 default-compile/
-│   │                   ├── 📄 createdFiles.lst
-│   │                   └── 📄 inputFiles.lst
+│   │   ├── 📁 maven-archiver/
+│   │   │   └── 📄 pom.properties
+│   │   │
+│   │   ├── 📁 maven-status/
+│   │   │   └── 📁 maven-compiler-plugin/
+│   │   │       └── 📁 compile/
+│   │   │           └── 📁 default-compile/
+│   │   │               ├── 📄 createdFiles.lst
+│   │   │               └── 📄 inputFiles.lst
+│   │   │
+│   │   └── 📄 demo-0.0.1-SNAPSHOT.jar.original
 │   │
 │   ├── 📄 README.md
 │   ├── 📝 test-commands.txt
@@ -284,4 +293,7 @@
 ├── 🐍 generate_directory_tree.py
 ├── 🐍 Get_video_information_hot.py
 ├── 🐍 Get_video_information_ranking.py
-└── 🐍 migrate_bilibili_to_schema.py
+├── 🐍 migrate_bilibili_to_schema.py
+├── 📄 导出数据库：bilibili_videos.sql
+├── 📄 导出数据库：data.sql
+└── 📄 导出数据库：schema.sql
