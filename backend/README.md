@@ -278,11 +278,6 @@ CREATE TABLE bilibili_videos (
 );
 ```
 
-## 前端集成
-- 前端项目位于 `../frontend/` 目录
-- 前端默认运行在 http://localhost:3000
-- 已配置CORS支持跨域访问
-
 ## 导航栏功能
 项目实现了完整的顶部导航栏切换功能，包括以下特性：
 
