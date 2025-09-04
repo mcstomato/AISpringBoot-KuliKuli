@@ -1,4 +1,9 @@
-INSERT INTO banner_message (content) VALUES ('我是黑大电子1班的田坤，我的学号是20222281');
+-- 清空banner_message表并重置自增计数
+DELETE FROM banner_message;
+ALTER TABLE banner_message AUTO_INCREMENT = 1;
+
+-- 插入banner_message数据
+INSERT INTO banner_message (content) VALUES ('你好呀，这里还没有设计，作者让我来占位了');
 
 -- 初始化用户数据（只在用户不存在时插入）
 INSERT INTO users (login_account, nickname, password, avatar_url, age, bio, join_date, video_count, follower_count, following_count) 
