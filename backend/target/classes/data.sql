@@ -1,3 +1,11 @@
+-- 强制清空banner_message表并重置自增计数
+DROP TABLE IF EXISTS banner_message;
+CREATE TABLE banner_message (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  content VARCHAR(255)
+);
+
+-- 插入banner_message数据
 INSERT INTO banner_message (content) VALUES ('你好呀，这里还没有设计，作者让我来占位了');
 
 -- 初始化用户数据（只在用户不存在时插入）

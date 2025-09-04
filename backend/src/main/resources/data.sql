@@ -1,6 +1,9 @@
--- 清空banner_message表并重置自增计数
-DELETE FROM banner_message;
-ALTER TABLE banner_message AUTO_INCREMENT = 1;
+-- 强制清空banner_message表并重置自增计数
+DROP TABLE IF EXISTS banner_message;
+CREATE TABLE banner_message (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  content VARCHAR(255)
+);
 
 -- 插入banner_message数据
 INSERT INTO banner_message (content) VALUES ('你好呀，这里还没有设计，作者让我来占位了');
